@@ -4,8 +4,7 @@
  */
 ?>
 
-
-<?php if ($this->request->session()->read('Auth.User.id')) :?>
+<?php if ($this->request->session()->read('Auth.User')) :?>
    <div class="container">
     <div class="containerAccount">
         <h1>
@@ -72,15 +71,15 @@
               
                 <table class="table table-bordered">
                 <tbody>
-                    <?php foreach ($lastPost as $user): ?>
+                    <?php foreach ($lastPost as $post): ?>
                         <tr>
                             <td>
                                 <?php
-                                    $url= 'files/Posts/photo/'.$user->photo;
+                                    $url= 'files/Posts/photo/'.$post->photo;
                                     echo $this->Html->image($url, [
                                         'height' => '120',
                                         'width' => '120',
-                                        'url' => ['controller' => 'Posts', 'action' => 'view', $user->id]
+                                        'url' => ['controller' => 'Posts', 'action' => 'view', $post->id]
                                     ]);
                                 ?>
                             </td>
@@ -89,60 +88,59 @@
                 </tbody>
                 </table> 
 
-
-
-
-
-
             </div>
         </div>
     </div>
     <div class="menuAccount">
         <ul class="navAccount">
-            <li<?php if($this->request->action == 'account'): ?> class="active"<?php endif; ?>>
-                <?= $this->Html->link('Mon compte', array('controller' => 'users', 'action' => 'account')); ?>
+            <li>
+                <i class="fas fa-cog"></i>
+                <?php if($this->request->action == 'account'): ?> class="active"<?php endif; ?>
+                <?= $this->Html->link('Mes informations', array('controller' => 'users', 'action' => 'account')); ?>
             </li>
-            <li<?php if($this->request->controller == 'pets'): ?> class="active"<?php endif; ?>>
+            <li>
+                <i class="fas fa-paw"></i>
+                <?php if($this->request->controller == 'pets'): ?> class="active"<?php endif; ?>
                 <?= $this->Html->link('Mes animaux', array('controller' => 'pets', 'action' => 'my')); ?>
             </li>
             <li<?php if($this->request->controller == 'posts'): ?> class="active"<?php endif; ?>>
-                <?= $this->Html->link('Mes photos', array('controller' => 'posts', 'action' => 'my')); ?>
+                <i class="fas fa-plus-circle"></i>
+                <?= $this->Html->link('Ajouter une photo', array('controller' => 'posts', 'action' => 'edit')); ?>
             </li>
         </ul>
         <div class="">
-            <h2>
-                Animaux que vous suivez:
-            </h2>
             <div class="containerLastPets">
-                    <?php foreach ($follow as $user): ?>
-                        <table cellpadding="0" cellspacing="0">
-                            <tr>
-                                <th scope="col"><?= __('Nom') ?></th>
-                                <th scope="col"><?= __('Espèce') ?></th>
-                            </tr>
-                            <tr>
-                                <td><?= h($user->id) ?></td>
-                                <td><?= $user->has('pet') ? $this->Html->link($user->pet->name, ['controller' => 'Species', 'action' => 'view', $user->pet->id]) : '' ?></td>
-                                <td>
-                                    <div class="pictureProfil">
-                                        <?php 
-                                        if ($user->has('pet')){
-                                            $url= 'files/Pets/photo/'.$user->pet->photo;
-                                            echo $this->Html->image($url, [
-                                                'height' => '120',
-                                                'width' => '120',
-                                                'url' => ['controller' => 'Pets', 'action' => 'pet', $pet->id]
+                <h2>
+                    Vos abonnements:
+                </h2>
+                <table class="table table-bordered">
+                    <tbody>
+                    <?php foreach ($follow as $lastSign): ?>
+                        <tr>
+                            <td>
+                                <div class="pictureProfil">
+                                    <?php 
+                                        if ($lastSign->has('pet')){
+                                            $url= 'files/Pets/photo/'.$lastSign->pet->photo;
+                                                echo $this->Html->image($url, [
+                                                    'height' => '120',
+                                                    'width' => '120',
+                                                    'url' => ['controller' => 'Pets', 'action' => 'pet', $pet->id]
                                             ]);
                                         }
-                                        ?>
-                                    </div>
-                                </td>
-                                
-                            </tr>              
-                        </table>
-                    <?php endforeach; ?>
-
-                </div>
+                                    ?>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+                    </tbody>
+                </table> 
+            </div>
+            <div class="">
+                
+                
+               
+            </div>
         </div>
     </div>
 </div>

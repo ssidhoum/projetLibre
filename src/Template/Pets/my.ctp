@@ -12,7 +12,7 @@
         <h2>
             Changer vos informations
         </h2>
-        
+        <i class="fas fa-plus-circle"></i>
         <?= $this->Html->link('Ajouter un animal', array('controller' => 'pets', 'action' => 'add')); ?>
 
         <table class="table table-bordered">
@@ -84,13 +84,16 @@
     <div class="menuAccount">
         <ul class="navAccount">
             <li<?php if($this->request->action == 'account'): ?> class="active"<?php endif; ?>>
+                <i class="fas fa-cog"></i>
                 <?= $this->Html->link('Mon compte', array('controller' => 'users', 'action' => 'account')); ?>
             </li>
-            <li<?php if($this->request->controller == 'pets'): ?> class="active"<?php endif; ?>>
+            <li<?php if($this->request->action === 'my'): ?> class="active"<?php endif; ?>>
+                <i class="fas fa-cog"></i>
                 <?= $this->Html->link('Mes animaux', array('controller' => 'pets', 'action' => 'my')); ?>
             </li>
-            <li<?php if($this->request->controller == 'posts'): ?> class="active"<?php endif; ?>>
-                <?= $this->Html->link('Mes photos', array('controller' => 'posts', 'action' => 'my')); ?>
+            <li<?php if($this->request->action == 'edit'): ?> class="active"<?php endif; ?>>
+                <i class="fas fa-plus-circle"></i>
+                <?= $this->Html->link('Ajouter une photo', array('controller' => 'posts', 'action' => 'edit')); ?>
             </li>
         </ul>
     </div>

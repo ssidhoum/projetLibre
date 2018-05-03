@@ -47,15 +47,33 @@
             </table>
             <?php endforeach; ?>
     	</div>
-
+        
+    <?php if ($this->request->session()->read('Auth.User')) :?>
+    <div class="menuAccount">
         <ul class="navAccount">
-            <li>
-				<?= 
-				$this->Html->link(
-    			'Ajouter commentaire',
-    			'/comments/add/'.$post->id
-				);?>
+            <li<?php if($this->request->action == 'add'): ?> class="active"<?php endif; ?>>
+                 <i class="fas fa-plus-circle"></i>
+                <?= 
+                    $this->Html->link(
+                        'Ajouter commentaire',
+                        '/comments/add/'.$post->id
+                );?>
+            </li>
+            <li<?php if($this->request->action == 'account'): ?> class="active"<?php endif; ?>>
+                <i class="fas fa-cog"></i>
+                <?= $this->Html->link('Mon compte', array('controller' => 'users', 'action' => 'account')); ?>
+            </li>
+            <li<?php if($this->request->action === 'my'): ?> class="active"<?php endif; ?>>
+                <i class="fas fa-cog"></i>
+                <?= $this->Html->link('Mes animaux', array('controller' => 'pets', 'action' => 'my')); ?>
+            </li>
+            <li<?php if($this->request->action == 'edit'): ?> class="active"<?php endif; ?>>
+                <i class="fas fa-plus-circle"></i>
+                <?= $this->Html->link('Ajouter une photo', array('controller' => 'posts', 'action' => 'edit')); ?>
             </li>
         </ul>
+    </div>
+    <?php endif; ?>
+        
     </div>
 </div>
