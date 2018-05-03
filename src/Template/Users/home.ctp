@@ -69,11 +69,31 @@
                 <h2>
                     Derniers posts de vos abonnés:
                 </h2>
-                <?php foreach ($lastPost as $user): ?>
-                    <tr>
-                        <?= $user->photo ?>
-                    </tr>
-                <?php endforeach; ?>
+              
+                <table class="table table-bordered">
+                <tbody>
+                    <?php foreach ($lastPost as $user): ?>
+                        <tr>
+                            <td>
+                                <?php
+                                    $url= 'files/Posts/photo/'.$user->photo;
+                                    echo $this->Html->image($url, [
+                                        'height' => '120',
+                                        'width' => '120',
+                                        'url' => ['controller' => 'Posts', 'action' => 'view', $user->id]
+                                    ]);
+                                ?>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+                </table> 
+
+
+
+
+
+
             </div>
         </div>
     </div>
