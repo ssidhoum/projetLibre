@@ -69,6 +69,11 @@
                 <h2>
                     Derniers posts de vos abonnés:
                 </h2>
+                <?php foreach ($lastPost as $user): ?>
+                    <tr>
+                        <?= $user->photo ?>
+                    </tr>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
@@ -116,6 +121,7 @@
                             </tr>              
                         </table>
                     <?php endforeach; ?>
+
                 </div>
         </div>
     </div>
