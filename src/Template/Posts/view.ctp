@@ -33,18 +33,22 @@
 
 		<div class="related">
             <h4><?= __('<i class="fas fa-comments"></i> Commentaires: ') ?></h4>
-            <?php foreach ($post->comments as $comments): ?>
-            <table cellpadding="0" cellspacing="0">
-                <tr>
-                    <td><?= h($comments->id) ?></td>
-                    <td><?= h($comments->content) ?></td>
+            <?php foreach ($comment as $comments): ?>
+                <table>
                     <td>
-                    <?php if($comments->has('user_id')){
-                        echo $comments->user_id->firstname;
-                    }  ?>
-                </td>
-                </tr>              
-            </table>
+                        <tr>
+                            <?= $comments->content ?>
+                        </tr>
+                        <tr>
+                            par:
+                            <?= $comments->has('user') ? $this->Html->link("   ".$comments->user->firstname, ['controller' => 'Users', 'action' => 'view', $comments->user->id]) : '' ?>
+                        </tr>
+                        <tr>
+                            le:
+                            <?= $comments->created->format('d/m/Y') ?>
+                        </tr>
+                    </td>
+                </table>
             <?php endforeach; ?>
     	</div>
         

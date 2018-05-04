@@ -12,7 +12,7 @@ class PostsController extends AppController
     public function initialize(){   
         parent::initialize();
         // Ajoute l'action 'add' à la liste des actions autorisées.
-        $this->Auth->allow(['my','edit', 'view']);
+        $this->Auth->allow(['my','edit', 'view', 'add']);
     }
 
     public function my(){
@@ -43,8 +43,15 @@ class PostsController extends AppController
         $this->set('post', $post);**/
 
         $post = $this->Posts->get($id, [
-            'contain' => ['Comments']
+            'contain' => ['Comments', 'Users']
         ]);
+
+        $this->loadModel('Comments');
+        $comment = $this->Comments->find('all', [
+            'contain' => [ 'Users'],
+            'conditions' => ['comments.post_id' => $post->id ]
+        ]);
+        $this->set('comment', $comment);
 
         
         $this->set('post', $post);
