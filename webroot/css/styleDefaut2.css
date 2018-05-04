@@ -1,0 +1,29 @@
+*{
+	margin: 0;
+    padding: 0;
+}
+
+ul{
+	display: flex;
+	list-style: none;
+}
+
+.formConnexionMenu{
+	width: 24%;
+	margin-left: 69%;
+	padding-top: 2.5%;
+	display: flex;
+}
+
+nav{
+	width: 100%;
+}
+
+.listNav{
+	padding-left: 1%;
+}
+
+footer{
+	padding: 2%;
+	background-color: #dec4a3;
+}

@@ -1,0 +1,89 @@
+h1{
+	font-family: 'Montserrat', sans-serif;
+	text-transform: uppercase;
+}
+
+h2{
+	font-family: 'Cormorant Garamond', serif;
+}
+
+a{
+	text-decoration: none;
+}
+
+.mainLayout{
+	background-color: #dec4a3;
+}
+
+.logoLayout{
+	padding-top: 2.5%;
+	padding-bottom: 2.5%;
+	width: 70%;
+	margin-left: 15%;
+}
+
+.logoInstaPet{
+	width: 30%;
+	margin-left: 35%;
+}
+
+.btnHome{
+	margin-top: 2.5%;
+	margin-left: 36%;
+	display: inline-block;
+	box-shadow: none;
+	appearance: none;
+	border: 0;
+	outline: 0;
+	background-color: #fd764f;
+	height: 45px;
+	line-height: 42px;
+	padding: 0 30px;
+	font-size: 20px;
+	border-radius: 30px;
+	color: rgb(40, 45, 50);
+	cursor: pointer;
+	transition: all .5s;
+	transition-timing-function: cubic-bezier(.2, 3, .4, 1);
+	user-select: none;
+}
+
+.secondLayout{
+	margin-top: 15%;
+	padding-top: 2.5%;
+	padding-bottom: 2.5%;
+	text-align: center;
+}
+
+.deco1{
+	width: 30%;
+	position: absolute;
+	top: 35%;
+	right: 0%;
+}
+
+.deco2{
+	width: 20%;
+	position: absolute;
+	top: 65%;
+	left: 5%;
+}
+
+.deco3{
+	transform: rotate(20deg);
+	position: absolute;
+	top: 77%;
+	left: 42%;
+	width: 20%;
+}
+
+.friseLayout{
+	width: 100%;
+	margin-top: 5%;
+}
+
+.listSecond{
+	padding-top: 2.5%;
+	display: block;
+
+}
