@@ -134,8 +134,10 @@ class PetsController extends AppController
         $firstSub->user_id= $this->Auth->user("id");
         
         $this->Pets->Subscriptions->save($firstSub);
+    }
 
-
+    public function unsubscribe($pet_id){
+        
 
     }
 

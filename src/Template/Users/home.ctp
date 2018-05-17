@@ -5,22 +5,95 @@
 ?>
 
 <?php if ($this->request->session()->read('Auth.User')) :?>
-   <div class="container">
-    <div class="containerAccount">
-        <h1>
-            Fil d'actualité
-        </h1>
-        <div class="containerInfo">
-            <div class="">
-                <h2>
-                    Suggestion: derniers inscrits
-                </h2>
-                <div class="containerLastPets">
-                    <?php foreach ($recentPets as $pet): ?>
-                    <td>
+    <div class="containerHome">
+
+        <div class="navProfil">
+            <nav class="cl-effect-13">
+                <ul class="navAccount">
+                    <li<?php if($this->request->action == 'home'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-home"></i>
+                        <?= $this->Html->link('Accueil', array('controller' => 'users', 'action' => 'home')); ?>
+                    </li>
+                    <li<?php if($this->request->action == 'view'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-user-circle"></i>
+                        <?= $this->Html->link('Mon profil', array('controller' => 'users', 'action' => 'view', 3)); ?>
+                    </li>
+                    <li<?php if($this->request->action == 'account'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-cog"></i>
+                        <?= $this->Html->link('Mes paramètres', array('controller' => 'users', 'action' => 'account')); ?>
+                    </li>
+                    <li<?php if($this->request->action === 'my'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-paw"></i>
+                        <?= $this->Html->link('Mes animaux', array('controller' => 'pets', 'action' => 'my')); ?>
+                    </li>
+                    <li<?php if($this->request->action == 'edit'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-plus-circle"></i>
+                        <?= $this->Html->link('Ajouter une photo', array('controller' => 'posts', 'action' => 'edit')); ?>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="flexLayout">
+            <div class="actuality">
+                <h1>
+                    Fils d'actualité
+                </h1>
+                <div >
+                    <table class="tablePosts">
+                    <tbody>
+                    <?php foreach ($lastPost as $post): ?>
+                        <tr class="containerActu">
+                            <th>
+                                <?=
+                                $post->has('user') ? $this->Html->link("   ".$post->pet->name, ['controller' => 'Users', 'action' => 'view', $post->user->id]) : '' 
+                                ?>
+                            </th>
+                        </tr>
+                        <tr class="containerActu">
+                            <td class="containerActuTD">
+                              <?php
+                                    $url= 'files/Posts/photo/'.$post->photo;
+                                    echo $this->Html->image($url, [
+                                        'class'=>'postsActu',
+                                        'url' => ['controller' => 'Posts', 'action' => 'view', $post->id]
+                                    ]);
+                                ?> <br/>
+                                <i class="far fa-heart"></i>Liker  <i class="fas fa-comments"></i> Commenter </span>
+                            </td>
+                        </tr>
+                       
+
+                    <?php endforeach ?>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            <div class="news">
+                <div class="LastPets">
+                    <h2>
+                        Derniers abonnés:
+                    </h2>
+                    <div class="containerLastPets">
+                        <?php foreach ($recentPets as $pet): ?>
+                        <table>
                         <tr>
-                            <div class="pictureProfil">
-                            <?php
+                            <th>
+                                <?= h($pet->name);?>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                        <?php
+                            $birthday = new DateTime(h($pet->birthday));
+                            echo $birthday->diff(new DateTime('now'))->y
+                            ?> Ans
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="pictureProfil">
+                                <?php
                                 if(empty($pet->photo)){
                                     if($pet->species_id == 1){
                                         $url= 'files/Pets/photo/chien.png';
@@ -52,155 +125,102 @@
                                         'url' => ['controller' => 'Pets', 'action' => 'pet', $pet->id]
                                     ]);
                                 }
-                            ?>
-                            </div>
-                        </tr>
-                        <tr><?= h($pet->name)  ?></tr>
-                        <tr>
-                            <?php
-                            $birthday = new DateTime(h($pet->birthday));
-                            echo $birthday->diff(new DateTime('now'))->y
-                            ?> Ans
-                        </tr>
-                    </td>
-                    <?php endforeach; ?>
-                </div>
-                <h2>
-                    Derniers posts de vos abonnés:
-                </h2>
-              
-                <table class="table table-bordered">
-                <tbody>
-                    <?php foreach ($lastPost as $post): ?>
-                        <tr>
-                            <td>
-                                <?php
-                                    $url= 'files/Posts/photo/'.$post->photo;
-                                    echo $this->Html->image($url, [
-                                        'height' => '120',
-                                        'width' => '120',
-                                        'url' => ['controller' => 'Posts', 'action' => 'view', $post->id]
-                                    ]);
                                 ?>
+                            </div>
                             </td>
                         </tr>
-                    <?php endforeach ?>
-                </tbody>
-                </table> 
+                        </table>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="LastComments">
+                    <h2>
+                        Les derniers commentaires:
+                    </h2>
+                </div>
+            </div>
+        </div>
 
-            </div>
-        </div>
     </div>
-    <div class="menuAccount">
-        <ul class="navAccount">
-            <li>
-                <i class="fas fa-cog"></i>
-                <?php if($this->request->action == 'account'): ?> class="active"<?php endif; ?>
-                <?= $this->Html->link('Mes informations', array('controller' => 'users', 'action' => 'account')); ?>
-            </li>
-            <li>
-                <i class="fas fa-paw"></i>
-                <?php if($this->request->controller == 'pets'): ?> class="active"<?php endif; ?>
-                <?= $this->Html->link('Mes animaux', array('controller' => 'pets', 'action' => 'my')); ?>
-            </li>
-            <li<?php if($this->request->controller == 'posts'): ?> class="active"<?php endif; ?>>
-                <i class="fas fa-plus-circle"></i>
-                <?= $this->Html->link('Ajouter une photo', array('controller' => 'posts', 'action' => 'edit')); ?>
-            </li>
-        </ul>
-        <div class="">
-            <div class="containerLastPets">
-                <h2>
-                    Vos abonnements:
-                </h2>
-                <table class="table table-bordered">
-                    <tbody>
-                    <?php foreach ($follow as $lastSign): ?>
-                        <tr>
-                            <td>
-                                <div class="pictureProfil">
-                                    <?php 
-                                        if ($lastSign->has('pet')){
-                                            $url= 'files/Pets/photo/'.$lastSign->pet->photo;
-                                                echo $this->Html->image($url, [
-                                                    'height' => '120',
-                                                    'width' => '120',
-                                                    'url' => ['controller' => 'Pets', 'action' => 'pet', $pet->id]
-                                            ]);
-                                        }
-                                    ?>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endforeach ?>
-                    </tbody>
-                </table> 
-            </div>
-            <div class="">
-                
-                
-               
-            </div>
-        </div>
-    </div>
-</div>
 <?php else: ?>
-    <div class="containerHome">
-        <div class="greenHome">
-        <div class="form">
-            <?= $this->Form->create($user) ?>
-            <fieldset>
-                <legend><?= __('Rejoignez nous') ?></legend>
-                <?php
-                    echo $this->Form->control('email', ['label'=>'Votre email: ']);
-                    echo $this->Form->control('password', ['label'=>'Votre mot de passe: ']);
-                    echo $this->Form->control('password2', ['label'=>'Retapez votre mot de passe: ']);
-                ?>
-            </fieldset>
-            <?= $this->Form->button(__('Inscription')) ?>
-            <?= $this->Form->end() ?>
-            <p class="or"> 
-                OU <br/>
-            </p>
-            <div class="icones">
-                <div class="instaIcon">
-                    <p>
-                        Se connecter <br/>
-                        avec insta
-                    </p>
-                    <?php 
-                        echo $this->Html->image("insta.png", [
-                            "alt" => "logo instapets",
-                            "class" => "iconDeco"
-                        ]);
-                    ?> 
-                </div>
-                <div class="fbIcon">
-
-                    <?php 
-                        echo $this->Html->image("facebook.png", [
-                            "alt" => "logo instapets",
-                            "class" => "iconDeco"
-                        ]);
-                    ?>
-                    <p>
-                        Se connecter <br/>
-                        avec facebook
-                    </p>
-                </div>
-             </div>
+    <div class="mainLayout">
+        <div class="logoLayout">
+            <?=
+                $this->Html->image("logo_V2.png", [
+                    "alt" => "logo instapets",
+                    "class" => "logoInstaPet",
+                    'url' => ['controller' => 'users', 'action' => 'home']
+            ]);
+            ?>
+            <br/>
+             <?php
+            echo $this->Html->link(
+            'Rejoignez notre communauté',
+            '/Users/add',
+            ['class' => 'btnHome', 'target' => '_blank']
+            );?>
         </div>
+        <div class="deco1">
+            <?=
+                $this->Html->image("patte.png", [
+                    "alt" => "logo instapets",
+                    "width" => "100%",
+            ]);
+            ?>
         </div>
-        <div class="whiteHome">
-            <h1 class="h1Home">
-                Découvrez instapet
+    </div>
+    <div class="deco2">
+            <?=
+                $this->Html->image("balle.png", [
+                    "alt" => "logo instapets",
+                    "width" => "100%",
+            ]);
+            ?>
+    </div>
+    <div class="deco3">
+            <?=
+                $this->Html->image("ligne.png", [
+                    "alt" => "logo instapets",
+                    "width" => "100%",
+            ]);
+            ?>
+    </div>
+    <div class="secondLayout">
+            <h1>
+                Découvrez InstaPet
             </h1>
-            <h2 class="quoteHome">
-                <i class="fas fa-quote-left"></i>
-                On peut juger de la grandeur d'une nation par la façon dont les animaux y sont traités.
-                <i class="fas fa-quote-right"></i>
+            <h2>
+                La communauté des amoureux des animaux.
             </h2>
+            <p>
+                InstaPet c'est une communauté, où tous les amis des amoureux sont les bienvenus
+            </p>
+            <ul class="listSecond">
+                <li>
+                    -Partager vos photos.
+                </li>
+                <li>
+                    -Suivez vos utilisateurs préferés
+                </li>
+            </ul>
+            <div>
+                    <?=
+                $this->Html->image("frise1.png", [
+                    "alt" => "logo instapets",
+                    "class"=>"friseLayout",
+                    'url' => ['controller' => 'users', 'action' => 'home']
+                    ]);
+                    ?>
             </div>
-        </div>
+
+            <div>
+                    <?=
+                $this->Html->image("frise2.png", [
+                    "alt" => "logo instapets",
+                    "class"=>"frise2Layout",
+                    'url' => ['controller' => 'users', 'action' => 'home']
+                    ]);
+                    ?>
+            </div>            
     </div>
 <?php endif ?>

@@ -33,23 +33,26 @@ class UsersTable extends Table
      * @return void
      */
     public function initialize(array $config)
+
     {
         parent::initialize($config);
 
         $this->setTable('users');
-        $this->setDisplayField('id');
-        $this->setPrimaryKey('id');
-        $this->addBehavior('Timestamp');
 
-        $this->hasMany('Articles', [
-            'foreignKey' => 'user_id'
-        ]);
+        $this->setPrimaryKey('id', 'user_id');
+
+        $this->addBehavior('Timestamp');
+ 
 
         $this->hasMany('Pets', [
             'foreignKey'=>'user_id'
         ]);
 
         $this->hasMany('Subscriptions', [
+            'foreignKey'=>'user_id'
+        ]);
+
+        $this->hasMany('Likes', [
             'foreignKey'=>'user_id'
         ]);
 

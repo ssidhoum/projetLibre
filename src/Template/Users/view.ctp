@@ -5,93 +5,152 @@
  */
 ?>
 
-<div class="users view large-9 medium-8 columns content">
-    <h3> <?= h($user->firstname);?>
-        <?= h($user->lastname); ?>
-    </h3>
-    <table class="vertical-table">
-        <tr>
-            <?php 
-                if (!empty($user->avatar)) {
-                $url= '/files/Users/avatar/'.$user->avatar;
-
-                echo $this->Html->image($url, [
-                    'height' => '100',
-                    'width' => '100',
-                    'alt'=>'coucou',
-                ]);
-                }
-            ?>
-        </tr>
-
-        <tr>
-            <th scope="row"><?= __('Inscrit depuis le: ') ?></th>
-            <td><?= h($user->created) ?></td>
-        </tr>
-    </table>
-
-    <div class="related">
-        <h4><?= __('Articles liés:') ?></h4>
-        <?php if (!empty($user->articles)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('User Id') ?></th>
-                <th scope="col"><?= __('Title') ?></th>
-                <th scope="col"><?= __('Slug') ?></th>
-                <th scope="col"><?= __('Body') ?></th>
-                <th scope="col"><?= __('Published') ?></th>
-                <th scope="col"><?= __('Created') ?></th>
-                <th scope="col"><?= __('Modified') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($user->articles as $articles): ?>
-            <tr>
-                <td><?= h($articles->id) ?></td>
-                <td><?= h($articles->user_id) ?></td>
-                <td><?= h($articles->title) ?></td>
-                <td><?= h($articles->slug) ?></td>
-                <td><?= h($articles->body) ?></td>
-                <td><?= h($articles->published) ?></td>
-                <td><?= h($articles->created) ?></td>
-                <td><?= h($articles->modified) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Articles', 'action' => 'view', $articles->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Articles', 'action' => 'edit', $articles->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Articles', 'action' => 'delete', $articles->id], ['confirm' => __('Are you sure you want to delete # {0}?', $articles->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
+<div class="containerHome">
+    <div class="navProfil">
+            <nav class="cl-effect-13">
+                <ul class="navAccount">
+                    <li<?php if($this->request->action == 'home'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-home"></i>
+                        <?= $this->Html->link('Accueil', array('controller' => 'users', 'action' => 'home')); ?>
+                    </li>
+                    <li<?php if($this->request->action == 'view'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-user-circle"></i>
+                        <?= $this->Html->link('Mon profil', array('controller' => 'users', 'action' => 'view', 3)); ?>
+                    </li>
+                    <li<?php if($this->request->action == 'account'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-cog"></i>
+                        <?= $this->Html->link('Mes paramètres', array('controller' => 'users', 'action' => 'account')); ?>
+                    </li>
+                    <li<?php if($this->request->action === 'my'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-paw"></i>
+                        <?= $this->Html->link('Mes animaux', array('controller' => 'pets', 'action' => 'my')); ?>
+                    </li>
+                    <li<?php if($this->request->action == 'edit'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-plus-circle"></i>
+                        <?= $this->Html->link('Ajouter une photo', array('controller' => 'posts', 'action' => 'edit')); ?>
+                    </li>
+                </ul>
+            </nav>
     </div>
-    <div class="related">
-        <h4><?= __('Ses animaux:') ?></h4>
-        <?php foreach ($user->pets as $pets): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('Nom') ?></th>
-                <th scope="col"><?= __('Espèce') ?></th>
-            </tr>
-            <tr>
-                <td><?= h($pets->name) ?></td>
-                <td><?= $pets->has('species') ? $this->Html->link($pets->species->name, ['controller' => 'Species', 'action' => 'view', $pets->species->id]) : '' ?></td>
-            </tr>              
-        </table>
-        <?php endforeach; ?>
-    </div>
-    <div class="related">
-        <h4><?= __('Ses animaux:') ?></h4>
-        <?php foreach ($user->subscriptions as $pets): ?>
-        <table cellpadding="0" cellspacing="0">
-                    <td>
-                        <?= $pets->id ?>
-                    </td>
-                    <td>
-                       <?= $pets->has('pet') ? $this->Html->link($pets->pet->name, ['controller' => 'Species', 'action' => 'view', $pets->pet->id]) : '' ?>
-                        <?= $user->has('user') ? $this->Html->link($user->user->firstname, ['controller' => 'Species', 'action' => 'view', $user->user->id]) : '' ?> 
-                    </td>
-        </table>
-        <?php endforeach; ?>
+
+    <div class="flexLayout">
+        <div class="containerProfil">
+            <div class="layout1Profil">
+                <h1 class="titleInfo">
+                    <?= h($user->firstname);?>
+                    <?= h($user->lastname); ?>
+                </h1>
+                <span>
+                    <div class="pictureProfil">
+                            <?php
+                                if (empty($user->avatar)) {
+                                        $url= 'files/Users/avatar/utilisateur3.png';
+                                        echo $this->Html->image($url, [
+                                            'height' => '120',
+                                            'width' => '120',
+                                        ]);
+                                }else{
+                                        $url= 'files/Users/avatar/'.$user->avatar;
+                                        echo $this->Html->image($url, [
+                                                'height' => '120',
+                                                'width' => '120',
+                                ]);
+                            }?>
+                    </div>
+                </span>
+            </div>
+            <div class="layout2Profil">
+                <h2>
+                    Ses animaux:
+                </h2>
+                
+                <?php foreach ($user->pets as $pets): ?>
+                <table>
+                    <tr>
+
+                        <td>
+                            <?php
+                                if(empty($pets->photo)){
+                                    if($pets->species_id == 1){
+                                        $url= 'files/Pets/photo/chien.png';
+                                        echo $this->Html->image($url, [
+                                        'height' => '120',
+                                        'width' => '120',
+                                        ]);  
+                                    }if($pets->species_id == 2){
+                                        $url= 'files/Pets/photo/chat.png';
+                                        echo $this->Html->image($url, [
+                                        'height' => '120',
+                                        'width' => '120',
+                                        ]);
+                                    }if($pets->species_id == 5){
+                                        $url= 'files/Pets/photo/lapin.png';
+                                        echo $this->Html->image($url, [
+                                        'height' => '120',
+                                        'width' => '120',
+                                        ]);
+                                    }
+                                }else{
+                                    $url= 'files/Pets/photo/'.$pets->photo;
+                                    echo $this->Html->image($url, [
+                                        'height' => '120',
+                                        'width' => '120',
+                                    ]);
+                                }
+                            ?> 
+                        </td>
+
+                        <td>
+                            <?= h($pets->name) ?>
+                        </td>
+
+                        <td>
+                            <?php
+                            $birthday = new DateTime(h($pets->birthday));
+                            echo $birthday->diff(new DateTime('now'))->y
+                            ?> Ans
+                        </td>
+                        <td>
+                            <?= $pets->has('species') ? $this->Html->link($pets->species->name, ['controller' => 'Species', 'action' => 'view', $pets->species->id]) : '' ?> 
+                        </td>    
+                    </tr>
+                </table>
+                <?php endforeach; ?>
+                
+            </div>
+
+            <div class="layout3Profil">
+                <h2>
+                    Ses abonnements:
+                </h2>
+                <table class="table table-bordered">
+                    <tbody>
+                    <?php foreach ($follow as $lastSign): ?>
+                        <tr>
+                            <td>
+                                <div class="pictureProfil">
+                                    <?php 
+                                        if ($lastSign->has('pet')){
+                                            $url= 'files/Pets/photo/'.$lastSign->pet->photo;
+                                                echo $this->Html->image($url, [
+                                                    'height' => '120',
+                                                    'width' => '120',
+                                                    'url' => ['controller' => 'Pets', 'action' => 'pet', $pets->id]
+                                            ]);
+                                        }
+                                    ?>
+                                </div>
+                            </td>
+                            <td>
+                               <?= $lastSign->name; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+                    </tbody>
+                </table> 
+
+            </div>
+        </div>
+        
     </div>
 </div>

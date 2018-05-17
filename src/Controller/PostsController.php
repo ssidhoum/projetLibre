@@ -12,7 +12,7 @@ class PostsController extends AppController
     public function initialize(){   
         parent::initialize();
         // Ajoute l'action 'add' à la liste des actions autorisées.
-        $this->Auth->allow(['my','edit', 'view', 'add', 'like']);
+        $this->Auth->allow(['my','edit', 'add', 'like']);
     }
 
     public function my(){
@@ -22,6 +22,9 @@ class PostsController extends AppController
         $pets=$this->Posts->Pets->find('list', array(
             'conditions'=> array('Pets.user_id'=>$this->Auth->user('id'))
         ));
+
+        $user_id= $this->Auth->user('id');
+
 
         $post = $this->Posts->newEntity();
         if ($this->request->is('post')) {
@@ -35,13 +38,10 @@ class PostsController extends AppController
             }
             $this->Flash->error(__('Nous sommes désolée. Une erreur a été rencontrée. Réessayer, svp.'));
         }
-        $this->set(compact('pets','post'));
+        $this->set(compact('pets','post', 'user_id'));
     }
 
-    public function view($id=null){
-        /**$post = $this->Posts->get($id);
-        $this->set('post', $post);**/
-
+    public function view($id){
         $post = $this->Posts->get($id, [
             'contain' => ['Comments', 'Users']
         ]);
@@ -61,6 +61,7 @@ class PostsController extends AppController
         $firstSub = $this->Posts->Likes->newEntity();
         $firstSub->post_id = $post_id;
         $firstSub->user_id= $this->Auth->user("id");
+        return $this->redirect(['action' => 'account']);
         
         $this->Posts->Likes->save($firstSub);
     }

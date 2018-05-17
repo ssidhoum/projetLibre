@@ -3,7 +3,13 @@ namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
 
-class Subscription extends Entity
+/**
+ * PetsPost Entity
+ *
+ * @property \App\Model\Entity\Pet $pet
+ * @property \App\Model\Entity\Post $post
+ */
+class PetsPost extends Entity
 {
 
     /**
@@ -16,8 +22,9 @@ class Subscription extends Entity
      * @var array
      */
     protected $_accessible = [
-        'id' => true,
-        'user_id' => true,
         'pet_id' => true,
+        'post_id' => true,
+        'pet' => true,
+        'post' => true
     ];
 }

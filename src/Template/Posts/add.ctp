@@ -4,19 +4,38 @@
  * @var \App\Model\Entity\Post $post
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Posts'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Pets'), ['controller' => 'Pets', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Pet'), ['controller' => 'Pets', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="posts form large-9 medium-8 columns content">
-    <?= $this->Form->create($post, ['type'=>'file']) ?>
-    <fieldset>
+
+<div class="containerHome">
+    <div class="navProfil">
+        <nav>
+            <ul class="navAccount">
+                <li<?php if($this->request->action == 'home'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-home"></i>
+                        <?= $this->Html->link('Accueil', array('controller' => 'users', 'action' => 'home')); ?>
+                </li>
+                <li<?php if($this->request->action == 'view'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-user-circle"></i>
+                        <?= $this->Html->link('Mon profil', array('controller' => 'users', 'action' => 'view')); ?>
+                </li>
+                <li<?php if($this->request->action == 'account'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-cog"></i>
+                        <?= $this->Html->link('Mes paramètres', array('controller' => 'users', 'action' => 'account')); ?>
+                </li>
+                <li<?php if($this->request->action === 'my'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-paw"></i>
+                        <?= $this->Html->link('Mes animaux', array('controller' => 'pets', 'action' => 'my')); ?>
+                </li>
+                <li<?php if($this->request->action == 'edit'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-plus-circle"></i>
+                        <?= $this->Html->link('Ajouter une photo', array('controller' => 'posts', 'action' => 'edit')); ?>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="flexLayout">
+        <?= $this->Form->create($post, ['type'=>'file']) ?>
+        <fieldset>
         <legend><?= __('Add Post') ?></legend>
         <?php
             echo $this->Form->control('name');
@@ -25,7 +44,8 @@
             echo $this->Form->input('photo', ['type' => 'file']);
             echo $this->Form->control('pets._ids', ['options' => $pets]);
         ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
+        </fieldset>
+        <?= $this->Form->button(__('Submit')) ?>
+        <?= $this->Form->end() ?>
+    </div>
 </div>

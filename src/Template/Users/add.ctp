@@ -4,17 +4,39 @@
  * @var \App\Model\Entity\User $user
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Articles'), ['controller' => 'Articles', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Article'), ['controller' => 'Articles', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="users form large-9 medium-8 columns content">
-    <?= $this->Form->create($user) ?>
-    <fieldset>
+
+ <div class="containerHome">
+    <div class="containerLogo">
+        <?=
+                $this->Html->image("logo_V2.png", [
+                    "alt" => "logo instapets",
+                    "class" => "logoInstaPet",
+                    'url' => ['controller' => 'users', 'action' => 'home']
+            ]);
+            ?>
+    </div>
+    <div class="deco4">
+        <?=
+                $this->Html->image("balle.png", [
+                    "alt" => "logo instapets",
+                    "class" => "logoInstaPet",
+                    'url' => ['controller' => 'users', 'action' => 'home']
+            ]);
+        ?>
+    </div>
+    <div class="deco5">
+        <?=
+                $this->Html->image("ligne.png", [
+                    "alt" => "logo instapets",
+                    "class" => "logoInstaPet",
+                    'url' => ['controller' => 'users', 'action' => 'home']
+            ]);
+        ?>
+    </div>
+
+    <div class="formAdd">
+        <?= $this->Form->create($user) ?>
+        <fieldset>
         <legend><?= __('Inscrivez-vous') ?></legend>
         <?php
             echo $this->Form->control('email', ['label' => 'votre adresse mail']);
@@ -26,8 +48,8 @@
                 ['class' => 'button', 'target' => '_blank']
             );
         ?>
-    </fieldset>
-    <?= $this->Form->button(__('Inscription')) ?>
-    <?= $this->Form->end() ?>
-</div>
-
+        </fieldset>
+            <?= $this->Form->button('Rejoignez notre communauté', ['class' => 'btnAdd']); ?>
+            <?= $this->Form->end() ?>
+    </div>
+ </div>

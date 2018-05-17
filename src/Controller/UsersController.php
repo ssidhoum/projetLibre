@@ -15,13 +15,10 @@ use Cake\ORM\Entity;
 class UsersController extends AppController
 {
 
-public function initialize()
-{   
-    parent::initialize();
-    $this->Auth->allow(['logout', 'add', 'forgot', 'account', 'home']);
-}
-
-
+    public function initialize(){   
+        parent::initialize();
+        $this->Auth->allow(['logout', 'add', 'forgot', 'account', 'home']);
+    }
 
     /**
      * Index method
@@ -43,10 +40,15 @@ public function initialize()
      */
     public function view($id = null){
         $user = $this->Users->get($id, [
-            'contain' => ['Articles','Pets', 'Subscriptions'],
+            'contain' => ['Pets', 'Subscriptions'],
         ]);
+        $this->loadModel('Subscriptions');
+        $follow = $this->Subscriptions->find('all', [
+            'contain' => ['Users','Pets'],
+            'conditions' => ['Subscriptions.user_id' => $this->Auth->user('id') ]
+         ]);
         $this->set('user', $user);
-
+        $this->set(compact('follow'));
     }
 
     /**
@@ -66,7 +68,6 @@ public function initialize()
             $this->Flash->error(__('Nous sommes désolée votre inscription a échoué. Merci de réessayer.'));
         }
         $this->set(compact('user'));
-
     }
 
     /**
@@ -84,26 +85,23 @@ public function initialize()
         } else {
             $this->Flash->error(__('Nous sommes désolée, nous avons rencontré une erreur. Merci de réessayer.'));
         }
-
         return $this->redirect(['action' => 'index']);
     }
 
 
-public function login()
-{
-    if ($this->request->is('post')) {
+    public function login(){
+        if ($this->request->is('post')) {
         $user = $this->Auth->identify();
-        if ($user) {
-            $this->Auth->setUser($user);
-            $this->Flash->success('Super vous êtes connecté!.');
-            return $this->redirect($this->Auth->redirectUrl());
+            if ($user) {
+                $this->Auth->setUser($user);
+                $this->Flash->success('Super vous êtes connecté!.');
+                return $this->redirect($this->Auth->redirectUrl());
+            }
+            $this->Flash->error('Votre identifiant ou votre mot de passe est incorrect.');
         }
-        $this->Flash->error('Votre identifiant ou votre mot de passe est incorrect.');
     }
-}
 
-
-  public function logout(){
+    public function logout(){
         $this->Flash->success('Vous avez été déconnecté.');
         return $this->redirect($this->Auth->logout());
     }
@@ -133,6 +131,7 @@ public function login()
     public function account(){
         $id=$this->Users->id=$this->Auth->user('id');
         $user = $this->Users->findById($id)->firstOrFail();
+
             if ($this->request->is(['post', 'put'])) {
                 $this->Users->patchEntity($user, $this->request->getData());
                 if ($this->Users->save($user)) {
@@ -141,33 +140,28 @@ public function login()
                     return $this->redirect(['action' => 'account']);
                 }
                 $this->Flash->error(__('Impossible de mettre à jour votre profil.'));
-                }
+            }
+
+
+            $this->loadModel('Subscriptions');
+            $follow = $this->Subscriptions->find('all', [
+                    'contain' => ['Users','Pets'],
+                    'conditions' => ['Subscriptions.user_id' => $this->Auth->user('id') ]
+            ]);    
+
             $this->set('user', $user);
+            $this->set(compact('follow' ));
     }
 
-    /*
-    *   Revoir pour la précision devrait distinguer si on s'inscrit ou si on se connecte
-    */
     public function home(){
-        $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('Votre inscription a réussi :D :D .'));
-
-                return $this->redirect(['action' => 'index']);
+            $user = $this->Auth->identify();
+            if ($user) {
+                $this->Auth->setUser($user);
+                $this->Flash->success('Super vous êtes connecté!.');
+                return $this->redirect($this->Auth->redirectUrl());
             }
-            $this->Flash->error(__('Nous sommes désolée votre inscription a échoué. Merci de réessayer.'));
-        }
-        $this->set(compact('user'));
-        if ($this->request->is('post')) {
-        $user = $this->Auth->identify();
-        if ($user) {
-            $this->Auth->setUser($user);
-            $this->Flash->success('Super vous êtes connecté!.');
-            return $this->redirect($this->Auth->redirectUrl());
-        }
-        $this->Flash->error('Votre identifiant ou votre mot de passe est incorrect.');
+            $this->Flash->error('Votre identifiant ou votre mot de passe est incorrect.');
         }
 
         $this->loadModel('Pets');
@@ -176,17 +170,28 @@ public function login()
         'order' => 'Pets.created DESC'
         ]);
 
-        $this->set(compact('recentPets'));
-
         $this->loadModel('Subscriptions');
         $follow = $this->Subscriptions->find('all', [
             'contain' => ['Users','Pets'],
+            'conditions' => ['Subscriptions.user_id' => $this->Auth->user('id') ]
          ]);
 
-        $this->set(compact('follow'));
+        $query = $this->Subscriptions->find('list', [
+            'keyField' => 'pet_id',
+            'valueField' => 'pet_id'
+        ])
+        ->where([
+            'user_id'=> $this->Auth->user("id")
+        ]);
+        $pets_id = $query->toArray();
+        
+        $this->loadModel('Posts');
+        $lastPost= $this->Posts->find('all',[
+            'conditions' => ['pet_id IN' =>  $pets_id]
+        ]);
 
+        $this->set(compact('follow', 'lastPost', 'recentPets' ));
     }
-
 
 
 

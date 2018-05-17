@@ -27,8 +27,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css('styleDefaut.css') ?>
-    <?= $this->Html->css('style2.css') ?>
+    <?= $this->Html->css('6.css') ?>
+    <?= $this->Html->css('aze.css') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -39,34 +39,28 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
       rel="stylesheet">
 </head>
 <body>
-    <nav>
-        <ul class="title-area large-3 medium-4 columns listnav">
+    <nav class="navDefaut">
+        <ul>
             <li class="logo">
-                 <?=
-                    $this->Html->image("logo_V2.png", [
+                <?=
+                    $this->Html->image("pet.png", [
                     "alt" => "logo instapets",
                     "class" => "logo",
-                    "width" => "25%",
+                    "width" => "90%",
                     'url' => ['controller' => 'users', 'action' => 'home']
                     ]);
                 ?>
             </li>
-        </ul>
-
+        
         <div class="formConnexionMenu">  
         <?php if ($this->request->session()->read('Auth.User.id')) :?>
-            <ul class="nav pull-right">
-                
-                <li><?= $this->Html->link('Paramètre', array('controller' => 'users', 'action' => 'account')); ?></li>
-                <li><?= $this->Html->link('Se déconnecter', array('controller' => 'users', 'action' => 'logout')); ?></li>
-            <?php if ($this->request->session()->read('Auth.User.role') == 'admin'): ?>
-                <li><?= $this->Html->link('Espèces', '/admin/species'); ?></li>
-        <?php endif ?>
-            </ul>
-            <?php else: ?>
-
-            <ul class="formConnexionMenu">
-
+                <li><?= $this->Html->link('Déconnexion', array('controller' => 'users', 'action' => 'logout')); ?></li>
+                <?php if ($this->request->session()->read('Auth.User.role') == 'admin'): ?>
+                    <li><?= $this->Html->link('Espèces', '/admin/species'); ?></li>
+                <?php endif ?>
+            
+        <?php else: ?>
+            
                 <li> <?= $this->Form->create() ?> </li>
                 <li> <?= $this->Form->control('email', ['placeholder' => 'votre adresse mail','label' => '']) ?> </li>
                 <li> <?= $this->Form->control('password',  ['placeholder' => 'votre mot de passe','label' => '']) ?> </li>
@@ -75,10 +69,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                 ?></li>
                 <li><?= $this->Form->end() ?></li>
             </ul>
-            
-            <?php endif ?>
+        <?php endif ?>
         </div>
-
     </nav>
 
     <?= $this->Flash->render() ?>
@@ -91,5 +83,22 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             2018-Instapets 
         </p>
     </footer>
+
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous">
+    </script>
+
+
+    <?php
+
+    echo $this->Html->script('main');
+    echo $this->Html->script('anime.min');
+    echo $this->Html->script('particles');
+
+    ?>
+
+
 </body>
 </html>

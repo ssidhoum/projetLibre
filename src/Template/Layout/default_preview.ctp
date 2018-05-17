@@ -1,4 +1,3 @@
-
 <?php
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
@@ -18,7 +17,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
 <!DOCTYPE html>
 <html>
-</head>
+
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,31 +27,33 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css('bases.css') ?>
-    <?= $this->Html->css('homes.css') ?>
+    <?= $this->Html->css('styleDefaut.css') ?>
+    <?= $this->Html->css('style2.css') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond|Montserrat" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
+</head>
 <body>
-    <nav class="top-bar expanded" data-topbar role="navigation">
-        <ul class="title-area large-3 medium-4 columns">
-            <li class="name">
+    <nav>
+        <ul class="title-area large-3 medium-4 columns listnav">
+            <li class="logo">
                  <?=
-                    $this->Html->image("logo.png", [
+                    $this->Html->image("logo_V2.png", [
                     "alt" => "logo instapets",
+                    "class" => "logo",
                     "width" => "25%",
-                    'url' => ['controller' => 'Articles', 'action' => 'index']
+                    'url' => ['controller' => 'users', 'action' => 'home']
                     ]);
                 ?>
             </li>
         </ul>
-        <div class="top-bar-section">  
 
-            
+        <div class="formConnexionMenu">  
         <?php if ($this->request->session()->read('Auth.User.id')) :?>
             <ul class="nav pull-right">
                 
@@ -62,19 +63,22 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                 <li><?= $this->Html->link('Espèces', '/admin/species'); ?></li>
         <?php endif ?>
             </ul>
-        <?php else: ?>
+            <?php else: ?>
 
             <ul class="formConnexionMenu">
 
                 <li> <?= $this->Form->create() ?> </li>
                 <li> <?= $this->Form->control('email', ['placeholder' => 'votre adresse mail','label' => '']) ?> </li>
                 <li> <?= $this->Form->control('password',  ['placeholder' => 'votre mot de passe','label' => '']) ?> </li>
-                <li><?= $this->Form->button('Connexion') ?></li>
+                <li><?=  $this->Form->button('GO', array('class' => 'forminput')) 
+                       // $this->Html->link('Connexion', array('controller' => 'users', 'action' => 'login', 'class'=>'falseBtn')); 
+                ?></li>
                 <li><?= $this->Form->end() ?></li>
             </ul>
             
-        <?php endif ?>
+            <?php endif ?>
         </div>
+
     </nav>
 
     <?= $this->Flash->render() ?>

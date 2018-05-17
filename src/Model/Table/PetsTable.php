@@ -37,7 +37,9 @@ class PetsTable extends Table
 
         $this->setTable('pets');
         $this->setDisplayField('name');
-        $this->setPrimaryKey('id');
+
+        $this->setPrimaryKey('id', 'pet_id');
+       
 
         $this->addBehavior('Timestamp');
 
