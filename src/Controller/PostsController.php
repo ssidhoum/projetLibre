@@ -12,7 +12,7 @@ class PostsController extends AppController
     public function initialize(){   
         parent::initialize();
         // Ajoute l'action 'add' à la liste des actions autorisées.
-        $this->Auth->allow(['my','edit', 'view', 'add']);
+        $this->Auth->allow(['my','edit', 'view', 'add', 'like']);
     }
 
     public function my(){
@@ -56,4 +56,14 @@ class PostsController extends AppController
         
         $this->set('post', $post);
     }
+
+    public function like($post_id){
+        $firstSub = $this->Posts->Likes->newEntity();
+        $firstSub->post_id = $post_id;
+        $firstSub->user_id= $this->Auth->user("id");
+        
+        $this->Posts->Likes->save($firstSub);
+    }
+
+
 }
