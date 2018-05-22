@@ -15,7 +15,7 @@ class PetsController extends AppController
 
     public function initialize(){   
         parent::initialize();
-        $this->Auth->allow(['my', 'add', 'edit', 'delete', 'pet', 'subscribe']);
+        $this->Auth->allow(['my', 'add', 'edit', 'delete', 'pet', 'subscribe', 'unsubscribe']);
     }
 
     /**
@@ -157,6 +157,7 @@ class PetsController extends AppController
             $this->Flash->error(__('Vous êtes déjà abonné(e).'));
         }else{
             $this->Pets->Subscriptions->save($firstSub);
+            $this->request->session()->write("Auth.Subscription.$pet_id", $pet_id);
             $this->Flash->success(__('Merci pour votre abonnement.'));
     
         }
@@ -172,6 +173,22 @@ class PetsController extends AppController
 
     public function unsubscribe($pet_id){
         
+        
+        $conditions= array(
+                'pet_id'=>$pet_id,
+                'user_id'=>$this->Auth->user('id')
+        );
+
+        $this->loadModel('Subscriptions');
+        $count=$this->Subscriptions->find('list', array(
+            'conditions'=>$conditions
+        ));
+
+        $this->request->session()->delete("Auth.Subscription.$pet_id");
+
+        $this->Subscriptions->deleteAll($conditions);
+        $this->Flash->error(__('Merci pour votre désabonnement'));
+        $this->redirect($this->referer());
 
     }
 

@@ -76,6 +76,31 @@ class AppController extends Controller
                 
             }
         }
+
+        if($this->request->session()->read('Auth.User.id') && !$this->request->session()->read('Auth.Subscription')){
+
+            $this->loadModel('Subscriptions');
+            $query = $this->Subscriptions->find('list', [
+            'keyField' => 'pet_id',
+            'valueField' => 'pet_id'
+            ])
+            ->where([
+            'user_id'=> $this->Auth->user("id")
+            ]);
+            $subscriptions = $query->toArray();
+           
+
+           $this->request->session()->write('Auth.Subscription',  $subscriptions);
+
+
+        }
+
+
+
+
+
+
+
     }
 
 

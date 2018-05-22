@@ -69,8 +69,15 @@
                             <i class="fas fa-plus-circle"></i>
                             <?= $this->Html->link('Ajouter une photo', array('action' => 'edit', '?' => 'pet=' . $pet->id)); ?>
                     <?php else: ?>
-                            <?= $this->Html->link('S\'abonner', array('controller' => 'pets', 'action' => 'subscribe', $pet->id)); ?>
-    
+                            <?php if(in_array($pet->id, $this->request->session()->read('Auth.Subscription'))) :?>
+
+                                <i class="fas fa-times"></i>
+                                <?= $this->Html->link('Se désabonner', array('controller' => 'pets', 'action' => 'unsubscribe', $pet->id)); ?>
+                            <?php else: ?>
+                                <i class="fas fa-check"></i>
+                                <?= $this->Html->link('S\'abonner', array('controller' => 'pets', 'action' => 'subscribe', $pet->id)); ?>
+                            
+                            <?php endif; ?>
                     <?php endif ?>
 
                 </p>
