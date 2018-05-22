@@ -7,7 +7,7 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-class  SubscriptionsTable extends Table
+class  LikesTable extends Table
 {
     public function initialize(array $config)
     {

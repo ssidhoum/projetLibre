@@ -93,7 +93,26 @@ class AppController extends Controller
            $this->request->session()->write('Auth.Subscription',  $subscriptions);
 
 
+           $this->loadModel('Likes');
+            $query = $this->Likes->find('list', [
+            'keyField' => 'post_id',
+            'valueField' => 'post_id'
+            ])
+            ->where([
+            'user_id'=> $this->Auth->user("id")
+            ]);
+            $likes = $query->toArray();
+           
+
+           $this->request->session()->write('Auth.Like',  $likes);
+
+
+
         }
+
+
+           
+
 
 
 

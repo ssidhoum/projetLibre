@@ -164,11 +164,6 @@ class PetsController extends AppController
 
         $this->redirect($this->referer());
 
-        
-
-
-
-
     }
 
     public function unsubscribe($pet_id){

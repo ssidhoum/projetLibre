@@ -12,7 +12,7 @@ class PostsController extends AppController
     public function initialize(){   
         parent::initialize();
         // Ajoute l'action 'add' à la liste des actions autorisées.
-        $this->Auth->allow(['my','edit', 'add', 'like']);
+        $this->Auth->allow(['my','edit', 'add', 'like', 'unlike']);
     }
 
     public function my(){
@@ -51,8 +51,15 @@ class PostsController extends AppController
             'contain' => [ 'Users'],
             'conditions' => ['comments.post_id' => $post->id ]
         ]);
-        $this->set('comment', $comment);
 
+        $this->loadModel('Likes');
+        $like = $this->Likes->find('all', [
+            'contain' => [ 'Users'],
+            'conditions' => ['likes.post_id' => $post->id ]
+        ]);
+
+        $this->set('comment', $comment);
+        $this->set('like', $like);
         
         $this->set('post', $post);
     }
@@ -61,10 +68,48 @@ class PostsController extends AppController
         $firstSub = $this->Posts->Likes->newEntity();
         $firstSub->post_id = $post_id;
         $firstSub->user_id= $this->Auth->user("id");
-        return $this->redirect(['action' => 'account']);
-        
-        $this->Posts->Likes->save($firstSub);
+
+        $conditions= array(
+                'post_id'=>$post_id,
+                'user_id'=>$this->Auth->user('id')
+        );
+
+        $this->loadModel('Likes');
+
+        $count=$this->Likes->find('list', array(
+            'conditions'=>$conditions
+        ));
+
+        if(!($count->isEmpty())){
+            $this->Flash->error(__('Vous aimez déjà.'));
+        }else{
+            $this->Posts->Likes->save($firstSub);
+            $this->request->session()->write("Auth.Like.$post_id", $post_id);
+            $this->Flash->success(__("Merci pour votre j'aime."));
+    
+        }
+
+        $this->redirect($this->referer());
     }
 
+    public function unlike($post_id){
+        $conditions= array(
+                'post_id'=>$post_id,
+                'user_id'=>$this->Auth->user('id')
+        );
+
+        $this->loadModel('Likes');
+        $count=$this->Likes->find('list', array(
+            'conditions'=>$conditions
+        ));
+
+        $this->request->session()->delete("Auth.Like.$post_id");
+
+        $this->Likes->deleteAll($conditions);
+        $this->Flash->error(__('Merci pour votre je naime plus'));
+        $this->redirect($this->referer());
+    }
+
+        
 
 }

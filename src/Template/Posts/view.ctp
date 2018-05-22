@@ -55,11 +55,22 @@
                         </tr>
                         <tr>
                             <td>
+
+                            <?php if(in_array($post->id, $this->request->session()->read('Auth.Like'))) :?>
+                                <i class="fas fa-times"></i>
+                                <?= $this->Html->link("Je n'aime plus ", array('controller' => 'posts', 'action' => 'unlike', $post->id)); ?>
+                            <?php else: ?>
                                 <i class="fas fa-heart"></i>
                                 <?= $this->Html->link("J'aime ", array('controller' => 'posts', 'action' => 'like', $post->id)); ?>
+                            
+                            <?php endif; ?>
+                    
                             </td>
                             <td>
                                 Aimé par :
+                                <?php foreach ($like as $likes): ?>
+                                    <?= $likes->has('user') ? $this->Html->link("   ".$likes->user->firstname, ['controller' => 'Users', 'action' => 'view', $likes->user->id]) : '' ?>
+                                <?php endforeach ?>
                             </td>
                         </tr>
                         <tr>
