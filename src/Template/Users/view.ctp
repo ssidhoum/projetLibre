@@ -58,6 +58,7 @@
                             }?>
                     </div>
                 </span>
+                <?= $this->Html->link('Contacter', array('controller' => 'messages', 'action' => 'compose', $user->id)); ?>
             </div>
             <div class="layout2Profil">
                 <h2>
