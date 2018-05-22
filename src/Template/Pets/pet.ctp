@@ -69,11 +69,8 @@
                             <i class="fas fa-plus-circle"></i>
                             <?= $this->Html->link('Ajouter une photo', array('action' => 'edit', '?' => 'pet=' . $pet->id)); ?>
                     <?php else: ?>
-                            <?= $this->Html->link(
-                                    'S\'abonner',
-                                    array('action' => 'subscribe', 'controller' => 'pets', $pet['Pet']['id']),
-                                    array('escape' => false, 'class' => 'btn btn-success')
-                            ); ?>
+                            <?= $this->Html->link('S\'abonner', array('controller' => 'pets', 'action' => 'subscribe', $pet->id)); ?>
+    
                     <?php endif ?>
 
                 </p>

@@ -14,7 +14,7 @@ class SubscriptionsController extends AppController
     $this->Auth->allow(['logout', 'add', 'forgot', 'account', 'home']);
   }
 
-  public function add($id=null){
+  public function add(){
     
         $comment = $this->Subscriptions->newEntity();
 

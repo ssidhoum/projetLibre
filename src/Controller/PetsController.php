@@ -130,11 +130,44 @@ class PetsController extends AppController
 
     public function subscribe($pet_id){
 
-        $firstSub = $this->Pets->Subscriptions->newEntity();
+        /**$firstSub = $this->Pets->Subscriptions->newEntity();
         $firstSub->pet_id = $pet_id;
         $firstSub->user_id= $this->Auth->user("id");
         
         $this->Pets->Subscriptions->save($firstSub);
+        return $this->redirect($this->referer());**/
+
+
+        $firstSub = $this->Pets->Subscriptions->newEntity();
+        $firstSub->pet_id = $pet_id;
+        $firstSub->user_id= $this->Auth->user("id");
+
+        $conditions= array(
+                'pet_id'=>$pet_id,
+                'user_id'=>$this->Auth->user('id')
+        );
+
+        $this->loadModel('Subscriptions');
+
+        $count=$this->Subscriptions->find('list', array(
+            'conditions'=>$conditions
+        ));
+
+        if(!($count->isEmpty())){
+            $this->Flash->error(__('Vous êtes déjà abonné(e).'));
+        }else{
+            $this->Pets->Subscriptions->save($firstSub);
+            $this->Flash->success(__('Merci pour votre abonnement.'));
+    
+        }
+
+        $this->redirect($this->referer());
+
+        
+
+
+
+
     }
 
     public function unsubscribe($pet_id){

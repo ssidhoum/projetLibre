@@ -22,7 +22,7 @@ class  SubscriptionsTable extends Table
         ]); 
 
         $this->addBehavior('CounterCache', [
-            'Posts' => ['likes_count']
+            'Posts' => ['like_count']
         ]);
 
         
