@@ -4,30 +4,85 @@
  * @var \App\Model\Entity\Pet $pet
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Pets'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Species'), ['controller' => 'Species', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Species'), ['controller' => 'Species', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="pets form large-9 medium-8 columns content">
-    <?= $this->Form->create($pet, ['type' => 'file']) ?>
-    <fieldset>
-        <legend><?= __('Ajouter votre animal') ?></legend>
-        <?php
-            echo $this->Form->control('name', ['label'=>'Nom de votre animal:']);
- 
-            echo $this->Form->control('species_id', ['options' => $species, 'label'=>'Espèce de votre animal:']);
-            echo $this->Form->control('birthday', ['label'=>'Date de naissance de votre animal:']);
-            echo $this->Form->control('gender', ['placeholder'=>'femelle, mâle, autre', 'label'=>'Sexe de votre animal:']);
 
-            echo $this->Form->control('user_id', ['options' => $users]);
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
+<div class="containerHome">
+
+        <div class="navProfil">
+            <nav class="cl-effect-13">
+                <ul class="navAccount">
+                    <li<?php if($this->request->action == 'home'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-home"></i>
+                        <?= $this->Html->link('Accueil', array('controller' => 'users', 'action' => 'home')); ?>
+                    </li>
+                    <li<?php if($this->request->action == 'view'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-user-circle"></i>
+                        <?= $this->Html->link('Mon profil', array('controller' => 'users', 'action' => 'view', 3)); ?>
+                    </li>
+                    <li<?php if($this->request->action == 'account'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-cog"></i>
+                        <?= $this->Html->link('Mes paramètres', array('controller' => 'users', 'action' => 'account')); ?>
+                    </li>
+                    <li<?php if($this->request->action === 'my'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-paw"></i>
+                        <?= $this->Html->link('Mes animaux', array('controller' => 'pets', 'action' => 'my')); ?>
+                    </li>
+                    <li<?php if($this->request->action == 'edit'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-plus-circle"></i>
+                        <?= $this->Html->link('Ajouter une photo', array('controller' => 'posts', 'action' => 'edit')); ?>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="flexLayout">
+            <?= $this->Form->create($pet, ['type' => 'file']) ?>
+            <h2>
+                Ajouter un animal
+            </h2>
+            <table>
+                <tr>
+                    <td>
+                        Nom:
+                    </td>
+                    <td>
+                        <?= $this->Form->control('name', ['label'=>' ']); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Espèce:
+                    </td>
+                    <td>
+                        <?= $this->Form->control('species_id', ['options' => $species, 'label'=>' ']); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Date de naissance:
+                    </td>
+                    <td>
+                        <?= $this->Form->control('birthday', ['label'=>' ']); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Sexe:
+                    </td>
+                    <td>
+                        <?= $this->Form->control('gender', ['label'=>' ', 'options'=>$genders ]); ?>
+                    </td>
+                </tr>
+                <tr class="hiddenTr">
+                    <td> 
+                        <?= $this->Form->control('user_id', ['options' => $users]); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <?= $this->Form->button(__('Submit')) ?>
+                    </td>
+                </tr>
+            </table>
+            <?= $this->Form->end() ?>
+        </div>
 </div>

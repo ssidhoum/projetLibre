@@ -64,8 +64,9 @@ class PetsController extends AppController
             $this->Flash->error(__('The pet could not be saved. Please, try again.'));
         }
         $species = $this->Pets->Species->find('list', ['limit' => 200]);
+        $genders = $this->Pets->Genders->find('list', ['limit' => 200]);
         $users = $this->Pets->Users->find('list', ['limit' => 200]);
-        $this->set(compact('pet', 'species', 'users'));
+        $this->set(compact('pet', 'species', 'users', 'genders'));
     }
 
     /**
@@ -122,7 +123,7 @@ class PetsController extends AppController
 
     public function pet($id = null){
         $pet = $this->Pets->get($id, [
-            'contain' => ['Posts', 'Species']
+            'contain' => ['Posts', 'Species', 'Users']
         ]);
         $this->set('pet', $pet, $id);
     }

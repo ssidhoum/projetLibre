@@ -56,7 +56,7 @@ class UsersTable extends Table
             'foreignKey'=>'user_id'
         ]);
 
-        $this->hasMany('comments', [
+        $this->hasMany('Comments', [
             'foreignKey'=>'user_id'
         ]);
 

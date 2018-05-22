@@ -58,31 +58,30 @@
                         $add= new DateTime(h($pet->created));
                         echo $add->diff(new DateTime('now'))->d
                     ?> jours <br/>
-                    <?= $pet->has('species') ? $this->Html->link($pet->species->name, ['controller' => 'Species', 'action' => 'view', $pet->species->id]) : '' ?>
+                    propriétaire:
+                    <?= $pet->has('user') ? $this->Html->link($pet->user->firstname, ['controller' => 'Users', 'action' => 'view', $pet->user->id]) : '' ?>
+
                 </div>
-            </div>
-            <div class="layout2Pets">
-                <p>
+                <div>
+                    <p>
                 <!--nocache-->
                     <?php if ($pet->user_id == $this->request->session()->read('Auth.User.id')): ?>
-                    <i class="fas fa-plus-circle"></i>
-                     <?= $this->Html->link('Ajouter une photo', array('action' => 'edit', '?' => 'pet=' . $pet->id)); ?>
+                            <i class="fas fa-plus-circle"></i>
+                            <?= $this->Html->link('Ajouter une photo', array('action' => 'edit', '?' => 'pet=' . $pet->id)); ?>
                     <?php else: ?>
-                    <?php if(in_array($pet->id, $this->request->session()->read('Auth.Subscription'))): ?>
-                        <?= $this->Html->link(
-                            ' Se désabonner',
-                            array('action' => 'unsubscribe', 'controller' => 'pets', $pet->id),
-                            array('escape' => false, 'class' => 'btn btn-warning')
-                        ); ?>
-                    <?php else: ?>
-                        <?= $this->Html->link(
-                            'S\'abonner',
-                            array('action' => 'subscribe', 'controller' => 'pets', $pet['Pet']['id']),
-                            array('escape' => false, 'class' => 'btn btn-success')
-                        ); ?>
-                    <?php endif; ?>
+                            <?= $this->Html->link(
+                                    'S\'abonner',
+                                    array('action' => 'subscribe', 'controller' => 'pets', $pet['Pet']['id']),
+                                    array('escape' => false, 'class' => 'btn btn-success')
+                            ); ?>
                     <?php endif ?>
+
                 </p>
+                </div>
+
+            </div>
+            <div class="layout2Pets">
+                
                 <table class="tablePets">
                     <tbody>
                     <?php foreach ($pet->posts as $posts): ?>

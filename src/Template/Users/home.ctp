@@ -59,7 +59,7 @@
                                         'url' => ['controller' => 'Posts', 'action' => 'view', $post->id]
                                     ]);
                                 ?> <br/>
-                                <i class="far fa-heart"></i>Liker  <i class="fas fa-comments"></i> Commenter </span>
+                                <i class="far fa-heart"></i> <?= $this->Html->link("J'aime ", array('controller' => 'posts', 'action' => 'like', $post->id)); ?>  <i class="fas fa-comments"></i>  <?= $this->Html->link("Je commente ", array('controller' => 'comments', 'action' => 'add', $post->id)); ?> </span>
                             </td>
                         </tr>
                        

@@ -27,7 +27,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css('6.css') ?>
+    <?= $this->Html->css('7.css') ?>
     <?= $this->Html->css('aze.css') ?>
 
     <?= $this->fetch('meta') ?>
@@ -90,12 +90,15 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         crossorigin="anonymous">
     </script>
 
-
+    <script src="https://cdn.jsdelivr.net/kute.js/1.6.5/kute-jquery.min.js"></script> <!-- jQuery Plugin -->
+<script src="https://cdn.jsdelivr.net/kute.js/1.6.5/kute-css.min.js"></script> <!-- CSS Plugin -->
+<script src="https://cdn.jsdelivr.net/kute.js/1.6.5/kute-svg.min.js"></script> <!-- SVG Plugin -->
+<script src="https://cdn.jsdelivr.net/kute.js/1.6.5/kute-text.min.js"></script> <!-- Text Plugin -->
+<script src="https://cdn.jsdelivr.net/kute.js/1.6.5/kute-attr.min.js"></script> <!-- Attributes Plugin -->
     <?php
 
     echo $this->Html->script('main');
-    echo $this->Html->script('anime.min');
-    echo $this->Html->script('particles');
+    
 
     ?>
 

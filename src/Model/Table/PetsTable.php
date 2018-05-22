@@ -60,6 +60,11 @@ class PetsTable extends Table
             'joinType' => 'INNER'
         ]);
 
+        $this->belongsTo('Genders', [
+            'foreignKey' => 'gender',
+            'joinType' => 'INNER'
+        ]);
+
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'
