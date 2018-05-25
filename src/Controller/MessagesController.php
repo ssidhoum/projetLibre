@@ -24,8 +24,10 @@ class MessagesController extends AppController
         $messages = $this->Messages->find('all', array(
             'conditions' => array(
                 'recipient_id' => $this->Auth->user('id')
-            )
+            ),
+
         ));
+
 
         $this->set(compact('messages'));
     }
@@ -72,6 +74,19 @@ class MessagesController extends AppController
        $archive->unionAll($archive1);
         
         $this->set(compact('sender_id', 'message', 'recipient_id', 'archive'));
+    }
+
+
+    public function view($id){
+        $message= $this->Messages->get($id, [
+            'contain' => ['Users']
+        ]);
+
+        $message->status= 1;
+        $this->Messages->save($message);
+
+
+
     }
 
 }

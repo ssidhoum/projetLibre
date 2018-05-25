@@ -67,10 +67,11 @@
                 </tr>
                 <tr>
                     <?= $this->Form->button(__('Envoyer')) ?>
+                    <?= $this->Form->end() ?>
                 </tr>
             </table>
             
-            <?= $this->Form->end() ?>
+            
 
 
             <table>

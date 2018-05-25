@@ -33,44 +33,6 @@
                 </ul>
             </nav>
         </div>
-
         <div class="flexLayout">
-        	<div>
-				<?= $this->Html->link('Ecrire un message', array('controller' => 'messages', 'action' => 'compose')); ?>
-        	</div>
-        	<table>
-        		<?php foreach ($messages as $message) : ?>
-
-        			<tr>
-        				<td>
-        					de:
-        				</td>
-        				<td>
-        					le:
-        				</td>
-        			</tr>
-        			<tr>
-        				<td>
-        					<?= $message->sender_id ?>
-
-                                <?= $message->has('user') ? $this->Html->link($message->user->firstname, ['controller' => 'Users', 'action' => 'view', $message->user->id]) : '' ?>
-                            
-        				</td>
-        				<td>
-        					<?= $this->Html->link('Lire message', array('controller' => 'messages', 'action' => 'view', $message->id)); ?>
-        				</td>
-                        <td>
-                            <?php if ($message->status == 0): ?>
-                                Non lu
-                            <?php else: ?>
-                                Lu
-                            <?php endif; ?>
-                        </td>
-        			</tr>
-
-        			
-
-        		<?php endforeach  ?>
-        	</table>
         </div>
 </div>
