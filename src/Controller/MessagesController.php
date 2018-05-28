@@ -25,6 +25,7 @@ class MessagesController extends AppController
             'conditions' => array(
                 'recipient_id' => $this->Auth->user('id')
             ),
+            'order' => ['created' => 'DESC']
 
         ));
 
