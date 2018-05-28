@@ -39,33 +39,17 @@
         </div>
 
         <div class="flexLayout">
-            <div class="tableMsg">
+        	<div class="tableOutbox">
                 <h2>
-                    Boite de réception
+                    Messages envoyés
                 </h2>
-        	    <table>
-        		<?php foreach ($messages as $message) : ?>
-        			<tr>
+                <table>
+                    <?php foreach ($messages as $message) : ?>
+                    
+                    <tr>
                         <td>
-                            <?php if($message->status==0) : ?>
-                                <i class="fas fa-envelope"></i>
-                            <?php else: ?>
-                                <i class="fas fa-envelope-open"></i>
-                            <?php endif ?>
+                            <?= $message->has('user') ? $this->Html->link($message->user->firstname, ['controller' => 'Users', 'action' => 'view', $message->user->id]) : '' ?>
                         </td>
-        				<td>
-        					<?= 
-                                $message->sender_id 
-                            ?>
-
-                            <?= 
-                                $message->has('user') ? $this->Html->link($message->user->firstname, ['controller' => 'Users', 'action' => 'view', $message->user->id]) : '' 
-                            ?>
-                            
-        				</td>
-        				<td>
-        					
-        				</td>
                         <td>
                             <?php 
                                 $contenu= $message->body;
@@ -73,8 +57,6 @@
                                 echo $this->Html->link($extrait, array('controller' => 'messages', 'action' => 'view', $message->id)); 
                             ?> 
                         </td>
-
-                        
                         <td>
                             <?php
                                 $date= new DateTime(h( $message->created));
@@ -116,12 +98,14 @@
                                     echo $diffYears."an, ".$diffMonths.' mois, et '.$diffDays.'jours.';
                                 }
                                 ?>
+                        </td>
+                    </tr>
+                    
 
-                        </td>  
-        			</tr>
-        		<?php endforeach  ?>
-        	   </table>
+                    <?php endforeach  ?>
+                </table>
             </div>
+
             <div class="menuMessagerie">
                 <nav class="cl-effect-13">
                     <ul class="navMessagerie">
@@ -140,5 +124,6 @@
                     </ul>
                 </nav>
             </div>
+        	
         </div>
-</div> 
+</div>

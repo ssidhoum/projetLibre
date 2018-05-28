@@ -38,5 +38,25 @@
             </nav>
         </div>
         <div class="flexLayout">
+            <table>
+                <?php foreach ($message as $archives): ?>
+                    <tr>
+                        <td>
+                            De: <?= h($archives->sender_id) ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            A: <?= h($archives->recipient_id) ?>
+                            <?= $archives->has('user') ? $this->Html->link($archives->user->firstname, ['controller' => 'Users', 'action' => 'view', $archives->user->id]) : '' ?> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                             <?= h($archives->body) ?>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
+            </table>
         </div>
 </div>

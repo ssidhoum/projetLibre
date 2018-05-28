@@ -37,7 +37,8 @@ class MessagesController extends AppController
         $messages = $this->Messages->find('all', array(
             'conditions' => array(
                 'sender_id' => $this->Auth->user('id')
-            )
+            ),
+            'contain' => ['Users']
         ));
         $this->set(compact('messages'));
     }
@@ -85,6 +86,7 @@ class MessagesController extends AppController
 
         $message->status= 1;
         $this->Messages->save($message);
+        $this->set(compact('message'));
 
 
 
