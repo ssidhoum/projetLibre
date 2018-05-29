@@ -39,12 +39,11 @@
             <div class="layout1Pets">
                 <?php
                     if (!empty($pet->photo)) {
-                        $url= 'files/Pets/photo/april.jpg';
-
-                        echo $this->Html->image($url, [
-                            'height' => '120',
-                            'width' => '120',
-                            ]);
+                        $url= 'files/Pets/photo/'.$pet->photo;
+                                    echo $this->Html->image($url, [
+                                        'height' => '120',
+                                        'width' => '120',
+                                    ]);
                 }?>
                 <div class="infoPets">
                     <?= h($pet->name)?> <br/>

@@ -80,6 +80,8 @@ class UsersTable extends Table
      */
     public function validationDefault(Validator $validator){
         
+        $validator->allowEmpty('avatar');
+
         $validator->requirePresence([
             'email' => [
             'mode' => 'create'

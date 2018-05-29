@@ -40,6 +40,7 @@
                 Ajouter un animal
             </h2>
             <table>
+
                 <tr>
                     <td>
                         Nom:
@@ -61,7 +62,23 @@
                         Date de naissance:
                     </td>
                     <td>
-                        <?= $this->Form->control('birthday', ['label'=>' ']); ?>
+                        <?php
+                            echo $this->Form->date('birthday', [
+                                'minYear' => 1960,
+                                'maxYear' => 2018,
+                                'monthNames' => false,
+                                'empty' => [
+                                'year' => 'année',
+                                'month' => 'mois',
+                                'day' => 'jour'
+                            ],
+        
+                            'year' => [
+                            'class' => 'cool-years',
+                            'title' => 'Année dinscription'
+                            ]
+                            ]);
+                        ?>
                     </td>
                 </tr>
                 <tr>
@@ -72,9 +89,34 @@
                         <?= $this->Form->control('gender', ['label'=>' ', 'options'=>$genders ]); ?>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        Race:
+                    </td>
+                    <td>
+                        <?= $this->Form->control('race', ['label'=>' ', 'options'=>$race ]); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Reprodution:
+                    </td>
+                    <td>
+                        <?= $this->Form->control('reproduction', ['options' => $reproduction, 'label'=>' ']); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Avatar:
+                    </td>
+                    <td>
+                        <?= $this->Form->input('photo', ['type' => 'file']); ?>
+                    </td>
+                </tr>
+                
                 <tr class="hiddenTr">
                     <td> 
-                        <?= $this->Form->control('user_id', ['options' => $users]); ?>
+                        <?= $this->Form->control('user_id', ['default' => $users, 'type'=>'text']); ?>
                     </td>
                 </tr>
                 <tr>

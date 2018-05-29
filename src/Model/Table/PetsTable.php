@@ -43,9 +43,7 @@ class PetsTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->addBehavior('CounterCache', [
-            'Pets' => ['subscriptions_count']
-        ]);
+        
 
         $this->hasMany('Subscriptions', [
             'foreignKey'=>'pet_id'
@@ -61,7 +59,17 @@ class PetsTable extends Table
         ]);
 
         $this->belongsTo('Genders', [
-            'foreignKey' => 'gender',
+            'foreignKey' => 'gender_id',
+            'joinType' => 'INNER'
+        ]);
+
+        $this->belongsTo('Races', [
+            'foreignKey' => 'race_id',
+            'joinType' => 'INNER'
+        ]);
+
+        $this->belongsTo('Reproductions', [
+            'foreignKey' => 'reproduction_id',
             'joinType' => 'INNER'
         ]);
 
@@ -97,6 +105,9 @@ class PetsTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
+
+        $validator
+            ->allowEmpty('photo');
 
         $validator
             ->scalar('name')

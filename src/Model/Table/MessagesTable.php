@@ -17,9 +17,7 @@ class  MessagesTable extends Table
             'foreignKey' => 'sender_id',
         ]);
 
-        $this->belongsTo('Users', [
-            'foreignKey' => 'recipient_id',
-        ]); 
+         
 
 
         
