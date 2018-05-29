@@ -40,6 +40,9 @@
                     <?= h($user->firstname);?>
                     <?= h($user->lastname); ?>
                 </h1>
+                <p>
+                    
+                </p>
                 <span>
                     <div class="pictureProfil">
                             <?php
@@ -58,9 +61,11 @@
                             }?>
                     </div>
                 </span>
-                <?= $this->Html->link('Contacter', array('controller' => 'messages', 'action' => 'compose', $user->id)); ?>
+
             </div>
             <div class="layout2Profil">
+                <i class="far fa-envelope"></i>
+                    <?= $this->Html->link('Contacter', array('controller' => 'messages', 'action' => 'compose', $user->id)); ?>
                 <h2>
                     Ses animaux:
                 </h2>

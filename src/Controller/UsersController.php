@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\Validation\Validator;
 use Cake\ORM\Entity;
+use Cake\Mailer\Email;
 
 /**
  * Users Controller
@@ -64,7 +65,7 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Votre article a été sauvegardé.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'home']);
             }
             $this->Flash->error(__('Impossible d\'ajouter votre article.'));
         }
@@ -113,15 +114,51 @@ class UsersController extends AppController
     *Permet de regénérer un mot de passe pour un utilisateur
     */
     public function forgot(){
-        if(!empty($this->request->data)){
-            $user= $this->Users->findByMail($this->request->date['User']['email'], array('id'));
-            if(empty($user)){
+       
+
+        if($this->request->is('post')){
+
+            $search= $this->request->data('email');
+            $query= '%'.$search.'%';
+
+            
+            $resultItems= $this->Users->find('all')->where(['Users.email LIKE' => $query]);
+
+            if(empty($resultItems)){
                 $this->Flash->error('Cet email est associé à aucun compte.Inscrivez vous :D.');
-                debug($user);
+            }else{
+                foreach ($resultItems as $items) {
+                    $token= md5(uniqid().time());
+                    $itemId= $items->id;
+                    $itemEmail= $items->email;
+
+                    if(!(empty($items->firstname))){
+                        $itemFirstname= $items->firstname;
+                    } else {
+                        $itemFirstname = "Instapet-teur";
+                    }
+
+
+                    $email = new Email('default');
+                    $email->from(['me@example.com' => 'My Site'])
+                        ->viewVars(['token' => $token, 'user_id'=>$itemId])
+                        ->to($itemEmail)
+                        ->template('password')
+                        ->subject('Rappel du mot de passe')
+                        ->send("Bonjour".$itemFirstname.",</br> tu as besoin d'un coup de pouce?");
+
+                    $this->Flash->success('Un mail vous a été envoyé pour regénerer votre mot de passe.');
+                }
             }
+
+
+            
         }else{
-            debug($user);
+            $resultItems= "recherche";
         }
+
+        $this->set('resultItems', $resultItems); 
+
     }
 
     /**
@@ -134,7 +171,7 @@ class UsersController extends AppController
     public function account(){
         $id=$this->Users->id=$this->Auth->user('id');
         $user = $this->Users->findById($id)->firstOrFail();
-
+        
             if ($this->request->is(['post', 'put'])) {
                 $this->Users->patchEntity($user, $this->request->getData());
                 if ($this->Users->save($user)) {
@@ -146,14 +183,7 @@ class UsersController extends AppController
             }
 
 
-            $this->loadModel('Subscriptions');
-            $follow = $this->Subscriptions->find('all', [
-                    'contain' => ['Users','Pets'],
-                    'conditions' => ['Subscriptions.user_id' => $this->Auth->user('id') ]
-            ]);    
-
             $this->set('user', $user);
-            $this->set(compact('follow' ));
     }
 
     public function home(){

@@ -22,6 +22,10 @@
                         <i class="fas fa-cog"></i>
                         <?= $this->Html->link('Mes paramètres', array('controller' => 'users', 'action' => 'account')); ?>
                     </li>
+                    <li<?php if($this->request->action == 'inbox'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-envelope"></i>
+                        <?= $this->Html->link('Messagerie', array('controller' => 'messages', 'action' => 'inbox')); ?>
+                    </li>
                     <li<?php if($this->request->action === 'my'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-paw"></i>
                         <?= $this->Html->link('Mes animaux', array('controller' => 'pets', 'action' => 'my')); ?>
@@ -35,41 +39,72 @@
         </div>
 
         <div class="flexLayout">
-            <div class="actuality">
+            <?php if (($follow->isEmpty())) : ?>
+                <div>
                 <h1>
-                    Fils d'actualité
+                    Bienvenue sur Instapets
                 </h1>
-                <div >
-                    <table class="tablePosts">
-                    <tbody>
-                    <?php foreach ($lastPost as $post): ?>
-                        <tr class="containerActu">
-                            <th>
-                                <?=
-                                $post->has('user') ? $this->Html->link("   ".$post->pet->name, ['controller' => 'Users', 'action' => 'view', $post->user->id]) : '' 
-                                ?>
-                            </th>
-                        </tr>
-                        <tr class="containerActu">
-                            <td class="containerActuTD">
-                              <?php
-                                    $url= 'files/Posts/photo/'.$post->photo;
-                                    echo $this->Html->image($url, [
-                                        'class'=>'postsActu',
-                                        'url' => ['controller' => 'Posts', 'action' => 'view', $post->id]
-                                    ]);
-                                ?> <br/>
-                                <i class="far fa-heart"></i> <?= $this->Html->link("J'aime ", array('controller' => 'posts', 'action' => 'like', $post->id)); ?>  <i class="fas fa-comments"></i>  <?= $this->Html->link("Je commente ", array('controller' => 'comments', 'action' => 'add', $post->id)); ?> </span>
-                            </td>
-                        </tr>
-                       
-
-                    <?php endforeach ?>
-                    </tbody>
-                </table>
-                </div>
+                <p>
+                    Vous êtes nouveau? <br/> Laissez nous vous guider!
+                </p>
+                <h2>
+                    
+                    <?= $this->Html->link('1ère étape: compléter votre profil', array('controller' => 'users', 'action' => 'account')); ?>
+                </h2>
+                <p>
+                    afin de pouvoir mieux s'intégrer à notre communauté. N'hésitez pas à compléter votre profil en y rajouter votre prénom, une photo de profil, votre date de naissance.
+                </p>
+                <h2>                
+                    <?= $this->Html->link('2ème étape: ajouter vos animaux', array('controller' => 'pets', 'action' => 'add')); ?>
+                </h2>
+                <p>
+                    afin de pouvoir mieux s'intégrer à notre communauté. N'hésitez pas à compléter votre profil en y rajouter vos animaux, leur espèce, leur race, et leur photos.
+                <h2>
+                    3ème étape: découvrer nos utilisateurs
+                </h2>
+                <p>
+                    afin de pouvoir mieux s'intégrer à notre communauté. N'hésitez pas à découvrir nos utilisateurs et aimez ceux qui vous ressemble.
+                </p>
             </div>
-            <div class="news">
+            <?php else: ?>
+                <div class="actuality">
+                    <h1>
+                        Fils d'actualité
+                    </h1>
+                    <div>
+                        <table class="tablePosts">
+                            <tbody>
+                            <?php foreach ($lastPost as $post): ?>
+                                <tr class="containerActu">
+                                    <th>
+                                        <?=
+                                            $post->has('user') ? $this->Html->link("   ".$post->pet->name, ['controller' => 'Users', 'action' => 'view', $post->user->id]) : '' 
+                                        ?>
+                                    </th>
+                                </tr>
+                                <tr class="containerActu">
+                                    <td class="containerActuTD">
+                                        <?php
+                                            $url= 'files/Posts/photo/'.$post->photo;
+                                            echo $this->Html->image($url, [
+                                                'class'=>'postsActu',
+                                                'url' => ['controller' => 'Posts', 'action' => 'view', $post->id]
+                                            ]);
+                                        ?> <br/>
+                                        <i class="far fa-heart"></i> <?= $this->Html->link("J'aime ", array('controller' => 'posts', 'action' => 'like', $post->id)); ?>  <i class="fas fa-comments"></i>  <?= $this->Html->link("Je commente ", array('controller' => 'comments', 'action' => 'add', $post->id)); ?> </span>
+                                    </td>
+                                </tr>
+                            <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                    
+            <?php endif ?>
+                <div class="news">
+                <div class="search">
+                    <?= $cell = $this->cell('Search'); ?>
+                </div>
                 <div class="LastPets">
                     <h2>
                         Derniers abonnés:
@@ -138,7 +173,7 @@
                         Les derniers commentaires:
                     </h2>
                 </div>
-            </div>
+                    </div>
         </div>
 
     </div>

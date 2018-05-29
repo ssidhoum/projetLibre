@@ -41,7 +41,8 @@ class User extends Entity
         'firstname' => true,
         'lastname' => true,
         'avatar' => true,
-        'avatar_dir' => true
+        'avatar_dir' => true,
+        'birthday' => true
     ];
 
     /**

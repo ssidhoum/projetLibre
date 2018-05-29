@@ -15,41 +15,54 @@
             ]);
             ?>
     </div>
-    <div class="deco4">
-        <?=
-                $this->Html->image("balle.png", [
-                    "alt" => "logo instapets",
-                    "class" => "logoInstaPet",
-                    'url' => ['controller' => 'users', 'action' => 'home']
-            ]);
-        ?>
-    </div>
-    <div class="deco5">
-        <?=
-                $this->Html->image("ligne.png", [
-                    "alt" => "logo instapets",
-                    "class" => "logoInstaPet",
-                    'url' => ['controller' => 'users', 'action' => 'home']
-            ]);
-        ?>
-    </div>
+    
 
     <div class="formAdd">
         <?= $this->Form->create($user) ?>
-        <fieldset>
-        <legend><?= __('Inscrivez-vous') ?></legend>
-        <?php
-            echo $this->Form->control('email', ['label' => 'votre adresse mail']);
-            echo $this->Form->control('password',['label' => 'votre mot de passe']);
-            echo $this->Form->control('password',['label' => 'confirmer votre mot de passe']);
-            echo $this->Html->link(
-                'Mot de passe oublié?',
-                '/users/forgot',
-                ['class' => 'button', 'target' => '_blank']
-            );
-        ?>
-        </fieldset>
-            <?= $this->Form->button('Rejoignez notre communauté', ['class' => 'btnAdd']); ?>
+
+
+                  <table>
+                <tr>
+                    <td>
+                        Votre adresse mail*
+                    </td>
+                    <td>
+                        <?=  $this->Form->control('Users.email', ['label' => ' ']); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Votre mot de passe*
+                    </td>
+                    <td>
+                        <?=  $this->Form->control('Users.password',['label' => ' ']); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Votre confirmation de mot de passe*
+                    </td>
+                    <td>
+                        <?=  $this->Form->control('password2',['label' => ' ', 'type' => 'password']); ?>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <?= $this->Html->link(
+                            'Mot de passe oublié?',
+                            '/users/forgot',
+                            ['class' => 'button', 'target' => '_blank']
+                        ); ?>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <?= $this->Form->button(__('Inscription')) ?>
+                    </td>
+                </tr>
+            </table>
             <?= $this->Form->end() ?>
     </div>
  </div>

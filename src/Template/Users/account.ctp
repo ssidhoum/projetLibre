@@ -18,6 +18,10 @@
                         <i class="fas fa-user-circle"></i>
                         <?= $this->Html->link('Mon profil', array('controller' => 'users', 'action' => 'view', 3)); ?>
                     </li>
+                    <li<?php if($this->request->action == 'inbox'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-envelope"></i>
+                        <?= $this->Html->link('Messagerie', array('controller' => 'messages', 'action' => 'inbox')); ?>
+                    </li>
                     <li<?php if($this->request->action == 'account'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-cog"></i>
                         <?= $this->Html->link('Mes paramètres', array('controller' => 'users', 'action' => 'account')); ?>
@@ -40,17 +44,41 @@
         <div class="infoAccount">
             <table class="tableAccount">
                 <?= $this->Form->create($user, ['type' => 'file']) ?>
+                <tr>
+                    <td>
+                        <div class="pictureProfil">
+                            <?php
+                                if (empty($user->avatar)) {
+                                        $url= 'files/Users/avatar/utilisateur3.png';
+                                        echo $this->Html->image($url, [
+                                            'height' => '120',
+                                            'width' => '120',
+                                        ]);
+                                }else{
+                                        $url= 'files/Users/avatar/'.$user->avatar;
+                                        echo $this->Html->image($url, [
+                                                'height' => '120',
+                                                'width' => '120',
+                                ]);
+                            }?>
+                        </div>
+                    </td>
+                    <td>
+                        <?= $this->Form->input('avatar', ['type' => 'file']); ?>
+                    </td>
+                </tr>
                 <tr >
                     <td class="ligneAccount">
-                      Nom:  
+                      Prénom:  
                     </td>
                     <td class="ligneAccount">
                       <?=  $this->Form->control('firstname',['label' => ' ']); ?>  
                     </td>
+
                 </tr>
                 <tr>
                     <td class="ligneAccount">
-                        Prénom:
+                        Nom:
                     </td>
                     <td class="ligneAccount">
                         <?= $this->Form->control('lastname',['label' => ' ']); ?>
@@ -69,12 +97,42 @@
                         Date de naissance:
                     </td>
                     <td class="ligneAccount">
-                        <?= $this->Form->control('lastname',['label' => ' ']); ?>
+                        <?php
+                            echo $this->Form->date('birthday', [
+                                'minYear' => 1960,
+                                'maxYear' => 2018,
+                                'monthNames' => false,
+                                'empty' => [
+                                'year' => 'année',
+                                'month' => 'mois',
+                                'day' => 'jour'
+                            ],
+        
+                            'year' => [
+                            'class' => 'cool-years',
+                            'title' => 'Année dinscription'
+                            ]
+                            ]);
+                        ?>
+
                     </td>
+                </tr>
+                <tr class="hiddenTr">
+
+                    <td>
+                        <?= $this->Form->control('modified', ['disabled' => 'true', 'label' => ' ']); ?>
+                    </td>
+
                 </tr>
                 <tr>
                     <td class="ligneAccount">
-                    
+                        <p>
+                            Dernière modification: 
+                            <?php  
+                                $add= new DateTime(h($user->modified));
+                                echo $add->diff(new DateTime('now'))->d
+                                ?> jours <br/>
+                        </p>
                     </td>
                     <td class="ligneAccount">
 

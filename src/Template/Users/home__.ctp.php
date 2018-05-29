@@ -4,6 +4,20 @@
  */
 ?>
 
+   if ($this->request->is('post')) {
+            $user = $this->Auth->identify();
+            if ($user) {
+                $this->Auth->setUser($user);
+                $this->Flash->success('Super vous êtes connecté!.');
+                return $this->redirect($this->Auth->redirectUrl());
+            }
+            $this->Flash->error('Votre identifiant ou votre mot de passe est incorrect.');
+        }
+
+
+        $this->set('resultItems', $resultItems);
+
+
 <?php if ($this->request->session()->read('Auth.User')) :?>
    <div class="container">
     <div class="containerAccount">
