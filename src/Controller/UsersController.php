@@ -57,17 +57,20 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
     public function add(){
+        
+
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('Votre inscription a réussi :D :D .'));
-
+                $this->Flash->success(__('Votre article a été sauvegardé.'));
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Nous sommes désolée votre inscription a échoué. Merci de réessayer.'));
+            $this->Flash->error(__('Impossible d\'ajouter votre article.'));
         }
-        $this->set(compact('user'));
+        $this->set('user', $user);
+
+        
     }
 
     /**
@@ -154,7 +157,7 @@ class UsersController extends AppController
     }
 
     public function home(){
-        if ($this->request->is('post')) {
+        if ($this->request->is('post')  && $this->request->data('email') && $this->request->data('password')) {
             $user = $this->Auth->identify();
             if ($user) {
                 $this->Auth->setUser($user);
@@ -179,7 +182,8 @@ class UsersController extends AppController
             'conditions' => ['Subscriptions.user_id' => $this->Auth->user('id') ]
          ]);
 
-        $query = $this->Subscriptions->find('list', [
+        if (!($follow->isEmpty()) ){
+        	$query = $this->Subscriptions->find('list', [
             'keyField' => 'pet_id',
             'valueField' => 'pet_id'
         ])
@@ -192,6 +196,10 @@ class UsersController extends AppController
         $lastPost= $this->Posts->find('all',[
             'conditions' => ['pet_id IN' =>  $pets_id]
         ]);
+        }
+        else{
+        	echo('première etape');
+        }
 
         $this->set(compact('follow', 'lastPost', 'recentPets' ));
     }

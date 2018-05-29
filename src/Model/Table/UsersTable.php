@@ -79,20 +79,31 @@ class UsersTable extends Table
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator){
-        $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
+        
+        $validator->requirePresence([
+            'email' => [
+            'mode' => 'create'
+        ],
+            'password' => [
+            'mode' => 'create'
+        ], 
+            'password2' => [
+            'mode' => 'create'
+        ],
+           
+        ]);
 
-        $validator
-            ->email('email')
-            ->requirePresence('email', 'create')
-            ->notEmpty('email');
+        $validator->add('password2',[
+            'match'=>[
+                'rule'=> ['compareWith','password'],
+                'message'=>'La confirmation est différente du mot de passe',
+            ]
+        ]);
 
-        $validator
-            ->scalar('password')
-            ->maxLength('password', 255)
-            ->requirePresence('password', 'create')
-            ->notEmpty('password');
+        $validator->add('email', 'custom', [
+            'rule' => [$this, 'isUnique'],
+            'message' => __("Cet email est déjà utilisé.")
+        ]);
 
         /**$validator
             ->add('avatarfile',[
@@ -123,14 +134,24 @@ class UsersTable extends Table
      *
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
-     */
+     
+
     public function buildRules(RulesChecker $rules)
     {
+      ;
+
         $rules->add($rules->isUnique(['email']));
         
         return $rules;
-    }
 
+    }
+*/
+
+    public function isUnique($data) {
+        $query = $this->find('all')->where(['Users.email' => $data]);
+        return $query->count() == 0;
+    }
+   
 
 
     
