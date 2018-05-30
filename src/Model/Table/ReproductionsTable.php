@@ -7,15 +7,15 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Species Model
+ * Reproductions Model
  *
- * @method \App\Model\Entity\Species get($primaryKey, $options = [])
- * @method \App\Model\Entity\Species newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Species[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Species|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Species patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Species[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Species findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Reproductions get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Reproductions newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Reproductions[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Reproductions|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Reproductions patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Reproductions[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Reproductions findOrCreate($search, callable $callback = null, $options = [])
  */
 class ReproductionsTable extends Table
 {

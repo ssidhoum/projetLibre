@@ -104,8 +104,9 @@ class AppController extends Controller
             $likes = $query->toArray();
            
 
-           $this->request->session()->write('Auth.Like',  $likes);
+           $this->request->session()->write('Auth.Message',  $likes);
 
+          
 
 
         }

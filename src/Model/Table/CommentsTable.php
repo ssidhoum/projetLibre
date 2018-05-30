@@ -21,4 +21,20 @@ class CommentsTable extends Table
             'foreignKey' => 'user_id'
         ]); 
     }
+
+    public function validationDefault(Validator $validator){
+        
+        $validator->allowEmpty('avatar');
+
+        $validator->requirePresence([
+            'content' => [
+            'mode' => 'create'
+        ],
+           
+        ]);
+
+        
+
+        return $validator;
+    }
 }

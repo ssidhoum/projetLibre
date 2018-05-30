@@ -15,12 +15,22 @@ class  MessagesTable extends Table
 
         $this->belongsTo('Users', [
             'foreignKey' => 'sender_id',
+        ]);    
+    }
+
+    public function validationDefault(Validator $validator){
+
+        $validator->requirePresence([
+            'body' => [
+            'mode' => 'create'
+        ],
+            'recipient_id' => [
+            'mode' => 'create'
+        ] 
         ]);
 
-         
+        return $validator;
 
-
-        
     }
 
 

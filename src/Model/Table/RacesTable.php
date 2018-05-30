@@ -7,15 +7,15 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Species Model
+ * Races Model
  *
- * @method \App\Model\Entity\Species get($primaryKey, $options = [])
- * @method \App\Model\Entity\Species newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Species[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Species|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Species patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Species[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Species findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Races get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Races newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Races[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Races|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Races patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Races[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Races findOrCreate($search, callable $callback = null, $options = [])
  */
 class RacesTable extends Table
 {

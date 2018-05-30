@@ -11,13 +11,13 @@ class PostsController extends AppController
 
     public function initialize(){   
         parent::initialize();
-        // Ajoute l'action 'add' à la liste des actions autorisées.
         $this->Auth->allow(['my','edit', 'add', 'like', 'unlike']);
     }
 
-    public function my(){
-    }
-
+    /**
+     * Edit method
+     *
+     */
     public function edit(){
         $pets=$this->Posts->Pets->find('list', array(
             'conditions'=> array('Pets.user_id'=>$this->Auth->user('id'))
@@ -38,10 +38,34 @@ class PostsController extends AppController
             }
             $this->Flash->error(__('Nous sommes désolée. Une erreur a été rencontrée. Réessayer, svp.'));
         }
-        $this->set(compact('pets','post', 'user_id'));
+
+        $this->loadModel('Pets');
+        $own = $this->Pets->find('all', array(
+            'conditions' => array('Pets.user_id' => $this->Auth->user("id")),
+            'contain' => ['Species', 'Users']
+        ));
+
+        $this->loadModel('Messages');
+        $unread = $this->Messages->find('all', array(
+            'conditions' => array(
+                'recipient_id'=> $this->Auth->user('id'),
+                'status' => 0
+            ),
+        ));
+         
+        $unreadcount= $unread->count();
+        
+        $this->set(compact('pets','post', 'user_id', 'own', 'unreadcount'));
     }
 
-    public function view($id){
+    /**
+     * View method
+     *
+     * @param string|null $id Post id.
+     * @return \Cake\Http\Response|void
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function view($id = null){
         $post = $this->Posts->get($id, [
             'contain' => ['Comments', 'Users']
         ]);
@@ -58,12 +82,25 @@ class PostsController extends AppController
             'conditions' => ['likes.post_id' => $post->id ]
         ]);
 
-        $this->set('comment', $comment);
-        $this->set('like', $like);
-        
-        $this->set('post', $post);
+        $this->loadModel('Messages');
+        $unread = $this->Messages->find('all', array(
+            'conditions' => array(
+                'recipient_id'=> $this->Auth->user('id'),
+                'status' => 0
+            ),
+        ));
+         
+        $user_id=$this->Auth->user('id');
+        $unreadcount= $unread->count();
+
+       
+        $this->set(compact('comment', 'like', 'post', 'unreadcount', 'user_id'));
     }
 
+    /**
+     * Like method : allows to like a publication
+     *
+     */
     public function like($post_id){
         $firstSub = $this->Posts->Likes->newEntity();
         $firstSub->post_id = $post_id;
@@ -92,6 +129,10 @@ class PostsController extends AppController
         $this->redirect($this->referer());
     }
 
+    /**
+     * Unlike method : to dislike a publication
+     *
+     */
     public function unlike($post_id){
         $conditions= array(
                 'post_id'=>$post_id,
@@ -103,7 +144,7 @@ class PostsController extends AppController
             'conditions'=>$conditions
         ));
 
-        $this->request->session()->delete("Auth.Like.$post_id");
+        $this->request->session()->delete("Auth.Like.$post_id", $post_id);
 
         $this->Likes->deleteAll($conditions);
         $this->Flash->error(__('Merci pour votre je naime plus'));

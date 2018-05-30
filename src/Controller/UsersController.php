@@ -26,8 +26,7 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|void
      */
-    public function index()
-    {
+    public function index(){
         $users = $this->paginate($this->Users);
         $this->set(compact('users'));
     }
@@ -48,8 +47,18 @@ class UsersController extends AppController
             'contain' => ['Users','Pets'],
             'conditions' => ['Subscriptions.user_id' => $this->Auth->user('id') ]
          ]);
-        $this->set('user', $user);
-        $this->set(compact('follow'));
+        $id=$this->Users->id=$this->Auth->user('id');
+        $this->loadModel('Messages');
+        $unread = $this->Messages->find('all', array(
+            'conditions' => array(
+                'recipient_id'=> $this->Auth->user('id'),
+                'status' => 0
+            ),
+        ));
+         
+        $unreadcount= $unread->count();
+       
+        $this->set(compact('follow', 'id', 'user', 'unreadcount'));
     }
 
     /**
@@ -59,19 +68,16 @@ class UsersController extends AppController
      */
     public function add(){
         
-
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('Votre article a été sauvegardé.'));
+                $this->Flash->success(__('Votre inscription a réussi. Connectez-vous pour essayer.'));
                 return $this->redirect(['action' => 'home']);
             }
-            $this->Flash->error(__('Impossible d\'ajouter votre article.'));
+            $this->Flash->error(__('Nous avons rencontré un soucis lors de votre inscription. Merci de réessayer.'));
         }
-        $this->set('user', $user);
-
-        
+        $this->set('user', $user);   
     }
 
     /**
@@ -93,6 +99,10 @@ class UsersController extends AppController
     }
 
 
+    /**
+    * Login method: allows a user to log in  
+    *
+    */
     public function login(){
         if ($this->request->is('post')) {
         $user = $this->Auth->identify();
@@ -105,17 +115,20 @@ class UsersController extends AppController
         }
     }
 
+    /**
+    * Logout method: allows a user to disconnect  
+    *
+    */
     public function logout(){
         $this->Flash->success('Vous avez été déconnecté.');
         return $this->redirect($this->Auth->logout());
     }
 
     /**
-    *Permet de regénérer un mot de passe pour un utilisateur
+    * Forgot method: allows to generate a new password
+    *
     */
     public function forgot(){
-       
-
         if($this->request->is('post')){
 
             $search= $this->request->data('email');
@@ -158,15 +171,11 @@ class UsersController extends AppController
         }
 
         $this->set('resultItems', $resultItems); 
-
     }
 
     /**
-     * Edit method
+     * Account method: allows to modify the information of an account
      *
-     * @param string|null $id User id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function account(){
         $id=$this->Users->id=$this->Auth->user('id');
@@ -181,11 +190,24 @@ class UsersController extends AppController
                 }
                 $this->Flash->error(__('Impossible de mettre à jour votre profil.'));
             }
+        $this->loadModel('Messages');
+        $unread = $this->Messages->find('all', array(
+            'conditions' => array(
+                'recipient_id'=> $this->Auth->user('id'),
+                'status' => 0
+            ),
+        ));
+         
+        $unreadcount= $unread->count();
 
-
-            $this->set('user', $user);
+            
+            $this->set(compact('user', 'id', 'unreadcount'));       
     }
 
+    /**
+     * Home method : allows to generate the home page
+     *
+     */
     public function home(){
         if ($this->request->is('post')  && $this->request->data('email') && $this->request->data('password')) {
             $user = $this->Auth->identify();
@@ -196,9 +218,6 @@ class UsersController extends AppController
             }
             $this->Flash->error('Votre identifiant ou votre mot de passe est incorrect.');
         }
-
-        
-        
 
         $this->loadModel('Pets');
         $recentPets = $this->Pets->find('all', [
@@ -227,11 +246,33 @@ class UsersController extends AppController
             'conditions' => ['pet_id IN' =>  $pets_id]
         ]);
         }
-        else{
-        	echo('première etape');
-        }
 
-        $this->set(compact('follow', 'lastPost', 'recentPets' ));
+        $id=$this->Users->id=$this->Auth->user('id');
+
+        $firstname= $this->Auth->user('firstname');
+
+        $this->set(compact('follow', 'lastPost', 'recentPets','id', 'firstname' ));
+
+
+        $own = $this->Pets->find('all', array(
+            'conditions' => array('Pets.user_id' => $this->Auth->user("id")),
+            'contain' => ['Species', 'Users']
+        ));
+        $this->set(compact('own'));
+
+        $this->loadModel('Messages');
+        $unread = $this->Messages->find('all', array(
+            'conditions' => array(
+                'recipient_id'=> $this->Auth->user('id'),
+                'status' => 0
+            ),
+        ));
+         
+        $unreadcount= $unread->count();
+        $unread_count= $unreadcount;
+        
+        
+        $this->set(compact('unread_count'));
     }
 
 

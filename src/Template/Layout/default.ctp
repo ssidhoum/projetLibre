@@ -27,8 +27,12 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css('7.css') ?>
-    <?= $this->Html->css('aze.css') ?>
+    <?= $this->Html->css('11.css')?>
+    <?= $this->Html->css('didi.css') ?>
+    <?= $this->Html->css('emoji.css') ?>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -58,8 +62,10 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                 <?php if ($this->request->session()->read('Auth.User.role') == 'admin'): ?>
                     <li><?= $this->Html->link('Espèces', '/admin/species'); ?></li>
                 <?php endif ?>
+                
             
         <?php else: ?>
+
             
                 <li> <?= $this->Form->create() ?> </li>
                 <li> <?= $this->Form->control('email', ['placeholder' => 'votre adresse mail','label' => '']) ?> </li>
@@ -84,23 +90,23 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         </p>
     </footer>
 
-    <script
-        src="https://code.jquery.com/jquery-3.3.1.js"
-        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-        crossorigin="anonymous">
+    <script>
+        FontAwesomeConfig = { searchPseudoElements: true };
     </script>
-
-    <script src="https://cdn.jsdelivr.net/kute.js/1.6.5/kute-jquery.min.js"></script> <!-- jQuery Plugin -->
-<script src="https://cdn.jsdelivr.net/kute.js/1.6.5/kute-css.min.js"></script> <!-- CSS Plugin -->
-<script src="https://cdn.jsdelivr.net/kute.js/1.6.5/kute-svg.min.js"></script> <!-- SVG Plugin -->
-<script src="https://cdn.jsdelivr.net/kute.js/1.6.5/kute-text.min.js"></script> <!-- Text Plugin -->
-<script src="https://cdn.jsdelivr.net/kute.js/1.6.5/kute-attr.min.js"></script> <!-- Attributes Plugin -->
+    
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <?php
 
     echo $this->Html->script('main');
+    echo $this->Html->script('config');
+    echo $this->Html->script('util');
+    echo $this->Html->script('jquery.emojiarea');
+    echo $this->Html->script('emoji-picker');
+    echo $this->Html->script('fontawesome-all');
     
-
     ?>
+    
+    
 
 
 </body>

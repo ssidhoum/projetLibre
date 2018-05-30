@@ -43,6 +43,7 @@ class User extends Entity
         'avatar' => true,
         'avatar_dir' => true,
         'birthday' => true
+
     ];
 
     /**

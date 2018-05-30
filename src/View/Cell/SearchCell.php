@@ -19,6 +19,8 @@ class SearchCell extends Cell
 
     
     public function display(){
+        
+
         if($this->request->is('post')){
             $search= $this->request->data('name');
             $query= '%'.$search.'%';
@@ -28,9 +30,9 @@ class SearchCell extends Cell
 
             
         }else{
-            $resultItems= "recherche";
+            $resultItems= null;
         }
-
+        
         $this->set('resultItems', $resultItems);
     }
 }

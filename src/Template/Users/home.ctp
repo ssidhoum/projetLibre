@@ -6,7 +6,6 @@
 
 <?php if ($this->request->session()->read('Auth.User')) :?>
     <div class="containerHome">
-
         <div class="navProfil">
             <nav class="cl-effect-13">
                 <ul class="navAccount">
@@ -16,7 +15,7 @@
                     </li>
                     <li<?php if($this->request->action == 'view'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-user-circle"></i>
-                        <?= $this->Html->link('Mon profil', array('controller' => 'users', 'action' => 'view', 3)); ?>
+                        <?= $this->Html->link('Mon profil', array('controller' => 'users', 'action' => 'view', $id)); ?>
                     </li>
                     <li<?php if($this->request->action == 'account'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-cog"></i>
@@ -24,7 +23,7 @@
                     </li>
                     <li<?php if($this->request->action == 'inbox'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-envelope"></i>
-                        <?= $this->Html->link('Messagerie', array('controller' => 'messages', 'action' => 'inbox')); ?>
+                        <?= $this->Html->link('Messagerie     '.$unread_count, array('controller' => 'messages', 'action' => 'inbox')); ?> 
                     </li>
                     <li<?php if($this->request->action === 'my'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-paw"></i>
@@ -37,71 +36,75 @@
                 </ul>
             </nav>
         </div>
-
         <div class="flexLayout">
-            <?php if (($follow->isEmpty())) : ?>
-                <div>
+            <div>
                 <h1>
                     Bienvenue sur Instapets
                 </h1>
-                <p>
-                    Vous êtes nouveau? <br/> Laissez nous vous guider!
-                </p>
-                <h2>
-                    
-                    <?= $this->Html->link('1ère étape: compléter votre profil', array('controller' => 'users', 'action' => 'account')); ?>
-                </h2>
-                <p>
-                    afin de pouvoir mieux s'intégrer à notre communauté. N'hésitez pas à compléter votre profil en y rajouter votre prénom, une photo de profil, votre date de naissance.
-                </p>
-                <h2>                
-                    <?= $this->Html->link('2ème étape: ajouter vos animaux', array('controller' => 'pets', 'action' => 'add')); ?>
-                </h2>
-                <p>
-                    afin de pouvoir mieux s'intégrer à notre communauté. N'hésitez pas à compléter votre profil en y rajouter vos animaux, leur espèce, leur race, et leur photos.
-                <h2>
-                    3ème étape: découvrer nos utilisateurs
-                </h2>
-                <p>
-                    afin de pouvoir mieux s'intégrer à notre communauté. N'hésitez pas à découvrir nos utilisateurs et aimez ceux qui vous ressemble.
-                </p>
+                <?php if(($firstname === 0) OR ($own->isEmpty()) OR ($follow->isEmpty())) :?>
+                    <p>
+                        Vous êtes nouveau? <br/> Laissez nous vous guider!
+                    </p>
+                <?php endif ?>
+                <?php if ($firstname == NULL) : ?>
+                    <h2>
+                        <?= $this->Html->link('Compléter votre profil', array('controller' => 'users', 'action' => 'account')); ?>
+                    </h2>
+                    <p>
+                        afin de pouvoir mieux s'intégrer à notre communauté. N'hésitez pas à compléter votre profil en y rajouter votre prénom, une photo de profil, votre date de naissance.
+                    </p>    
+                <?php endif ?> 
+                <?php if ($own->isEmpty()) : ?>
+                    <h2>                
+                        <?= $this->Html->link('Ajouter vos animaux', array('controller' => 'pets', 'action' => 'add')); ?>
+                    </h2>
+                    <p>
+                        afin de pouvoir mieux s'intégrer à notre communauté. N'hésitez pas à compléter votre profil en y rajouter vos animaux, leur espèce, leur race, et leur photos.
+                    </p>
+                <?php endif ?>
+                <?php if (($follow->isEmpty())) : ?>
+                    <h2>
+                        Découvrer nos utilisateurs
+                    </h2>
+                    <p>
+                        afin de pouvoir mieux s'intégrer à notre communauté. N'hésitez pas à découvrir nos utilisateurs et aimez ceux qui vous ressemble.
+                    </p>
             </div>
-            <?php else: ?>
-                <div class="actuality">
-                    <h1>
-                        Fils d'actualité
-                    </h1>
-                    <div>
-                        <table class="tablePosts">
-                            <tbody>
-                            <?php foreach ($lastPost as $post): ?>
-                                <tr class="containerActu">
-                                    <th>
-                                        <?=
-                                            $post->has('user') ? $this->Html->link("   ".$post->pet->name, ['controller' => 'Users', 'action' => 'view', $post->user->id]) : '' 
-                                        ?>
-                                    </th>
-                                </tr>
-                                <tr class="containerActu">
-                                    <td class="containerActuTD">
-                                        <?php
-                                            $url= 'files/Posts/photo/'.$post->photo;
+                <?php else: ?>
+            <div class="actuality">
+                <h1>
+                    Fils d'actualité
+                </h1>
+                <div>
+                    <table class="tablePosts">
+                        <tbody>
+                        <?php foreach ($lastPost as $post): ?>
+                            <tr class="containerActu">
+                                <th>
+                                    <?=
+                                        $post->has('user') ? $this->Html->link("   ".$post->pet->name, ['controller' => 'Users', 'action' => 'view', $post->user->id]) : '' 
+                                    ?>
+                                </th>
+                            </tr>
+                            <tr class="containerActu">
+                                <td class="containerActuTD">
+                                    <?php
+                                        $url= 'files/Posts/photo/'.$post->photo;
                                             echo $this->Html->image($url, [
                                                 'class'=>'postsActu',
                                                 'url' => ['controller' => 'Posts', 'action' => 'view', $post->id]
-                                            ]);
-                                        ?> <br/>
+                                        ]);
+                                    ?> <br/>
                                         <i class="far fa-heart"></i> <?= $this->Html->link("J'aime ", array('controller' => 'posts', 'action' => 'like', $post->id)); ?>  <i class="fas fa-comments"></i>  <?= $this->Html->link("Je commente ", array('controller' => 'comments', 'action' => 'add', $post->id)); ?> </span>
                                     </td>
                                 </tr>
                             <?php endforeach ?>
                             </tbody>
-                        </table>
-                    </div>
+                    </table>
                 </div>
-                    
-            <?php endif ?>
-                <div class="news">
+            </div>      
+                <?php endif ?>
+            <div class="news">
                 <div class="search">
                     <?= $cell = $this->cell('Search'); ?>
                 </div>
@@ -173,9 +176,8 @@
                         Les derniers commentaires:
                     </h2>
                 </div>
-                    </div>
+            </div>
         </div>
-
     </div>
 <?php else: ?>
     <div class="mainLayout">
@@ -192,7 +194,7 @@
             echo $this->Html->link(
             'Rejoignez notre communauté',
             '/Users/add',
-            ['class' => 'btnHome', 'target' => '_blank']
+            ['class' => 'button28 btnHome', 'target' => '_blank']
             );?>
         </div>
         <div class="deco1">

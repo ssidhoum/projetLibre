@@ -4,6 +4,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+
 class PostsTable extends Table
 {
     public function initialize(array $config)
@@ -49,5 +50,29 @@ class PostsTable extends Table
             'targetForeignKey' => 'pet_id',
             'joinTable' => 'pets_posts'
         ]);*/
+    }
+
+    /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationDefault(Validator $validator){
+
+        $validator->requirePresence([
+            'content' => [
+            'mode' => 'create'
+        ],
+            'photo' => [
+            'mode' => 'create'
+        ], 
+            'pet_id' => [
+            'mode' => 'create'
+        ], 
+        ]);
+
+        return $validator;
+
     }
 }

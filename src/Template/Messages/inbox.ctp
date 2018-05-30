@@ -16,7 +16,7 @@
                     </li>
                     <li<?php if($this->request->action == 'view'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-user-circle"></i>
-                        <?= $this->Html->link('Mon profil', array('controller' => 'users', 'action' => 'view', 3)); ?>
+                        <?= $this->Html->link('Mon profil', array('controller' => 'users', 'action' => 'view', $user)); ?>
                     </li>
                     <li<?php if($this->request->action == 'account'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-cog"></i>
@@ -24,7 +24,7 @@
                     </li>
                     <li<?php if($this->request->action == 'inbox'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-envelope"></i>
-                        <?= $this->Html->link('Messagerie', array('controller' => 'messages', 'action' => 'inbox')); ?>
+                        <?= $this->Html->link('Messagerie     '.$unreadcount, array('controller' => 'messages', 'action' => 'inbox')); ?>      
                     </li>
                     <li<?php if($this->request->action === 'my'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-paw"></i>
@@ -43,8 +43,16 @@
                 <h2>
                     Boite de réception
                 </h2>
-        	    <table>
-        		<?php foreach ($messages as $message) : ?>
+                <?php if($messages->isEmpty()) :?>
+                    <p>
+                        <i class="far fa-frown"></i>
+                        Votre boite de réception est vide pour l'instant. <br/>
+                        N'hésitez pas à découvrir nos utilisateurs et aimez ceux qui vous ressemble!
+                    </p>
+                <?php else :?>
+                    
+        	       <table>
+        		   <?php foreach ($messages as $message) : ?>
         			<tr>
                         <td>
                             <?php if($message->status==0) : ?>
@@ -118,9 +126,13 @@
                                 ?>
 
                         </td>  
+                        <td>
+                            <?= $this->Form->postLink('Supprimer', array('action' => 'delete', $message->id), array(), 'Voulez vous vraiment supprimer ?'); ?>
+                        </td>
         			</tr>
-        		<?php endforeach  ?>
-        	   </table>
+        		   <?php endforeach  ?>
+        	       </table>
+                <?php endif ?>
             </div>
             <div class="menuMessagerie">
                 <nav class="cl-effect-13">

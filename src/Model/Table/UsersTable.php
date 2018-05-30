@@ -92,6 +92,15 @@ class UsersTable extends Table
             'password2' => [
             'mode' => 'create'
         ],
+            'firstname' => [
+            'mode' => 'update'
+        ],
+            'lastname' => [
+            'mode' => 'update'
+        ],
+            'birthday' => [
+            'mode' => 'update'
+        ],
            
         ]);
 

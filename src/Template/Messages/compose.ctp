@@ -24,7 +24,7 @@
                     </li>
                     <li<?php if($this->request->action == 'inbox'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-envelope"></i>
-                        <?= $this->Html->link('Messagerie', array('controller' => 'messages', 'action' => 'inbox')); ?>
+                        <?= $this->Html->link('Messagerie     '.$unreadcount, array('controller' => 'messages', 'action' => 'inbox')); ?>      
                     </li>
                     <li<?php if($this->request->action === 'my'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-paw"></i>
@@ -42,41 +42,48 @@
             <h2>
                 Envoyer un message
             </h2>
+           <div class="answer">
             
-            <table>
-                <?= $this->Form->create($message) ?>
-                <tr>
-                    <td>
-                        Envoyeur:
-                    </td>
-                    <td>
-                        <?= $this->Form->control('sender_id', ['default' => $sender_id, 'type' => 'text']);  ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Destinataire:
-                    </td>
-                    <td>
-                        <?= $this->Form->control('recipient_id', ['default' => $recipient_id, 'type' => 'text']);  ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Votre message:
-                    </td>
-                    <td>
-                        <?= $this->Form->control('body', ['label' => ' ']);  ?>
-                    </td>
-                </tr>
-                <tr>
-                    <?= $this->Form->button(__('Envoyer')) ?>
+                    <h2>
+                        Votre réponse
+                    </h2>
+                    <?= $this->Form->create($message) ?>
+                    <table class="tableAnswer">
+                    <tr>
+                        <td>
+                            Expéditeur
+                        </td>
+                        <td>
+                            <?= $this->Form->control('sender_id ', ['default' => $sender_id   , 'type' => 'text', 'label' => ' ']);  ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Destinataire:
+                        </td>
+                        <td>
+                           <?= $this->Form->control('recipient_id', ['default' => $recipient_id , 'type' => 'text', 'label' => ' ']);  ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            votre message:
+                        </td>
+                        <td>
+                            <?= $this->Form->control('body', ['label' => ' ']);  ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <?= $this->Form->button('<i class="far fa-envelope"></i>Envoye', ['type' => 'submit', 'class' => 'sendBtn']); ?>
+                        </td>
+                    </tr>
+                    </table>
                     <?= $this->Form->end() ?>
-                </tr>
-            </table>
+            </div>
             
-            
-
 
             <table>
                 <?php foreach ($archive as $archives): ?>

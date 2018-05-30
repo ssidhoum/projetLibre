@@ -24,7 +24,7 @@
                     </li>
                     <li<?php if($this->request->action == 'inbox'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-envelope"></i>
-                        <?= $this->Html->link('Messagerie', array('controller' => 'messages', 'action' => 'inbox')); ?>
+                        <?= $this->Html->link('Messagerie     '.$unreadcount, array('controller' => 'messages', 'action' => 'inbox')); ?>      
                     </li>
                     <li<?php if($this->request->action === 'my'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-paw"></i>
@@ -43,14 +43,20 @@
                 <h2>
                     Messages envoyés
                 </h2>
+                <?php if($messages->isEmpty()) :?>
+                    <p>
+                        <i class="far fa-frown"></i>
+                        Vous n'avez envoyé aucun message pour l'instant. <br/>
+                        N'hésitez pas à découvrir nos utilisateurs et aimez ceux qui vous ressemble!
+                    </p>
+                <?php else :?>
                 <table>
                     <?php foreach ($messages as $message) : ?>
                     
                     <tr>
                         <td>
                             <?= $message->has('user') ? $this->Html->link($message->user->firstname, ['controller' => 'Users', 'action' => 'view', $message->user->id]) : '' ?>
-                        </td>
-                        <td>
+                        
                             <?php 
                                 $contenu= $message->body;
                                 $extrait= substr($contenu,0, 10).'...';
@@ -104,6 +110,7 @@
 
                     <?php endforeach  ?>
                 </table>
+                <?php endif ?>
             </div>
 
             <div class="menuMessagerie">

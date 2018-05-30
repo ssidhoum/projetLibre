@@ -15,7 +15,11 @@
                     </li>
                     <li<?php if($this->request->action == 'view'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-user-circle"></i>
-                        <?= $this->Html->link('Mon profil', array('controller' => 'users', 'action' => 'view', 3)); ?>
+                        <?= $this->Html->link('Mon profil', array('controller' => 'users', 'action' => 'view', $id)); ?>
+                    </li>
+                    <li<?php if($this->request->action == 'inbox'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-envelope"></i>
+                        <?= $this->Html->link('Messagerie     '.$unreadcount, array('controller' => 'messages', 'action' => 'inbox')); ?>      
                     </li>
                     <li<?php if($this->request->action == 'account'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-cog"></i>
@@ -43,6 +47,13 @@
                 <?= $this->Html->link('Ajouter un animal', array('controller' => 'pets', 'action' => 'add')); ?>
             </div>
 
+            <?php if($pets->isEmpty()) :?>
+                <p>
+                    <i class="fas fa-paw fa-3x fa-pulse" data-fa-transform="shrink-10 up-.5" data-fa-mask="fas fa-3x fa-comment" ></i>
+                    Vous devez d'abord rajouter un animal !
+
+                </p>
+            <?php else :?>
             <table class="tablePets">
                 <thead>
                     <tr>
@@ -108,6 +119,15 @@
                     <?php endforeach ?>
                 </tbody>
             </table>
+            <?php endif ?>
+
+
+
+
+
+
+
+            
         </div>
     
 

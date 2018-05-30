@@ -5,13 +5,11 @@ use App\Controller\AppController;
 use Cake\ORM\Query;
 /**
  * Pets Controller
- *
  * @property \App\Model\Table\PetsTable $Pets
- *
  * @method \App\Model\Entity\Pet[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class PetsController extends AppController
-{
+
+class PetsController extends AppController{
 
     public function initialize(){   
         parent::initialize();
@@ -41,15 +39,17 @@ class PetsController extends AppController
      */
     public function view($id = null){
         $pet = $this->Pets->get($id, [
-            'contain' => ['Species', 'Users']
+            'contain' => ['Species', 'Users', 'Races', 'Reproductions']
         ]);
-        $this->set('pet', $pet);
+        $id=$this->Users->id=$this->Auth->user('id');
+
+        $this->set('pet', $pet, 'id', $id);
+
     }
 
     /**
-     * Add method
+     * Add method : allows to register an animal
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
     public function add(){
         $pet = $this->Pets->newEntity();
@@ -68,12 +68,22 @@ class PetsController extends AppController
         $species = $this->Pets->Species->find('list', ['limit' => 200]);
         $genders = $this->Pets->Genders->find('list', ['limit' => 200]);
         $users = $this->Auth->user('id');
-        $this->set(compact('pet', 'species', 'users', 'genders', 'race', 'reproduction'));
+
+        $this->loadModel('Messages');
+        $unread = $this->Messages->find('all', array(
+            'conditions' => array(
+                'recipient_id'=> $this->Auth->user('id'),
+                'status' => 0
+            ),
+        ));
+         
+        $unreadcount= $unread->count();
+
+        $this->set(compact('pet', 'species', 'users', 'genders', 'race', 'reproduction', 'unreadcount'));
     }
 
     /**
      * Edit method
-     *
      * @param string|null $id Pet id.
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
@@ -93,7 +103,20 @@ class PetsController extends AppController
         }
         $species = $this->Pets->Species->find('list', ['limit' => 200]);
         $users = $this->Pets->Users->find('list', ['limit' => 200]);
-        $this->set(compact('pet', 'species', 'users'));
+        $races = $this->Pets->Races->find('list', ['limit' => 200]);
+        $reproductions = $this->Pets->Reproductions->find('list', ['limit' => 200]);
+        $id=$this->Auth->user('id');
+
+        $this->loadModel('Messages');
+        $unread = $this->Messages->find('all', array(
+            'conditions' => array(
+                'recipient_id'=> $this->Auth->user('id'),
+                'status' => 0
+            ),
+        ));
+         
+        $unreadcount= $unread->count();
+        $this->set(compact('pet', 'species', 'users', 'id', 'races', 'reproductions', 'unreadcount'));
     }
 
     /**
@@ -114,32 +137,56 @@ class PetsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+    
 
+    /**
+     * My method : allows to display the animals of a user
+     *
+     */
     public function my(){
         $pets = $this->Pets->find('all', array(
             'conditions' => array('Pets.user_id' => $this->Auth->user("id")),
-            'contain' => ['Species', 'Users']
+            'contain' => ['Species', 'Users', 'Races', 'Reproductions']
         ));
-        $this->set(compact('pets'));
+        $id=$this->Auth->user('id');
+        $this->loadModel('Messages');
+        $unread = $this->Messages->find('all', array(
+            'conditions' => array(
+                'recipient_id'=> $this->Auth->user('id'),
+                'status' => 0
+            ),
+        ));
+         
+        $unreadcount= $unread->count();
+        $this->set(compact('pets', 'id', 'unreadcount'));
     }
 
+    /**
+     * Pet method : allows to see the profile of an animal
+     *
+     */
     public function pet($id = null){
         $pet = $this->Pets->get($id, [
-            'contain' => ['Posts', 'Species', 'Users']
+            'contain' => ['Posts', 'Species', 'Users', 'Races', 'Reproductions']
         ]);
-        $this->set('pet', $pet, $id);
+        $idd=$this->Auth->user('id');
+        $this->loadModel('Messages');
+        $unread = $this->Messages->find('all', array(
+            'conditions' => array(
+                'recipient_id'=> $this->Auth->user('id'),
+                'status' => 0
+            ),
+        ));
+         
+        $unreadcount= $unread->count();
+        $this->set(compact('pet', 'id', 'idd', 'unreadcount'));  
     }
 
+    /**
+     * Subscribe method : allows you to subscribe to an animal
+     *
+     */
     public function subscribe($pet_id){
-
-        /**$firstSub = $this->Pets->Subscriptions->newEntity();
-        $firstSub->pet_id = $pet_id;
-        $firstSub->user_id= $this->Auth->user("id");
-        
-        $this->Pets->Subscriptions->save($firstSub);
-        return $this->redirect($this->referer());**/
-
-
         $firstSub = $this->Pets->Subscriptions->newEntity();
         $firstSub->pet_id = $pet_id;
         $firstSub->user_id= $this->Auth->user("id");
@@ -165,12 +212,13 @@ class PetsController extends AppController
         }
 
         $this->redirect($this->referer());
-
     }
 
-    public function unsubscribe($pet_id){
-        
-        
+    /**
+     * Subscribe method : allows you to unsubscribe from an animal
+     *
+     */
+    public function unsubscribe($pet_id){ 
         $conditions= array(
                 'pet_id'=>$pet_id,
                 'user_id'=>$this->Auth->user('id')
@@ -186,7 +234,8 @@ class PetsController extends AppController
         $this->Subscriptions->deleteAll($conditions);
         $this->Flash->error(__('Merci pour votre désabonnement'));
         $this->redirect($this->referer());
-
     }
+
+    
 
 }

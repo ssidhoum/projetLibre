@@ -21,9 +21,9 @@
                         <i class="fas fa-cog"></i>
                         <?= $this->Html->link('Mes paramètres', array('controller' => 'users', 'action' => 'account')); ?>
                 </li>
-                <li<?php if($this->request->action === 'my'): ?> class="active"<?php endif; ?>>
-                        <i class="fas fa-paw"></i>
-                        <?= $this->Html->link('Mes animaux', array('controller' => 'pets', 'action' => 'my')); ?>
+                <li<?php if($this->request->action == 'inbox'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-envelope"></i>
+                        <?= $this->Html->link('Messagerie     '.$unreadcount, array('controller' => 'messages', 'action' => 'inbox')); ?>      
                 </li>
                 <li<?php if($this->request->action == 'edit'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-plus-circle"></i>

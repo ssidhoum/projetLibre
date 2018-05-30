@@ -15,7 +15,11 @@
                     </li>
                     <li<?php if($this->request->action == 'view'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-user-circle"></i>
-                        <?= $this->Html->link('Mon profil', array('controller' => 'users', 'action' => 'view', 3)); ?>
+                        <?= $this->Html->link('Mon profil', array('controller' => 'users', 'action' => 'view', $id)); ?>
+                    </li>
+                    <li<?php if($this->request->action == 'inbox'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-envelope"></i>
+                        <?= $this->Html->link('Messagerie     '.$unreadcount, array('controller' => 'messages', 'action' => 'inbox')); ?>      
                     </li>
                     <li<?php if($this->request->action == 'account'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-cog"></i>

@@ -6,7 +6,6 @@
 ?>
 
 <div class="containerHome">
-
         <div class="navProfil">
             <nav class="cl-effect-13">
                 <ul class="navAccount">
@@ -16,7 +15,11 @@
                     </li>
                     <li<?php if($this->request->action == 'view'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-user-circle"></i>
-                        <?= $this->Html->link('Mon profil', array('controller' => 'users', 'action' => 'view', 3)); ?>
+                        <?= $this->Html->link('Mon profil', array('controller' => 'users', 'action' => 'view', $users)); ?>
+                    </li>
+                    <li<?php if($this->request->action == 'inbox'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-envelope"></i>
+                        <?= $this->Html->link('Messagerie     '.$unreadcount, array('controller' => 'messages', 'action' => 'inbox')); ?>      
                     </li>
                     <li<?php if($this->request->action == 'account'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-cog"></i>
@@ -121,7 +124,9 @@
                 </tr>
                 <tr>
                     <td>
-                        <?= $this->Form->button(__('Submit')) ?>
+                    </td>
+                    <td>
+                        <?= $this->Form->button(__('Ajouter')) ?>
                     </td>
                 </tr>
             </table>

@@ -4,6 +4,14 @@
  */
 ?>
 
+<h2>
+	Résultats
+</h2>
+
+
+
+
+
 <div class="formSearch">
 	<table>
 		<?= $this->Form->create() ?>
@@ -26,8 +34,7 @@
 		</tr>
 		<tr>
 			<td>
-				<?= $this->Form->button('Rechercher', ['class' => 'searchBtn']) ?>
-
+				<?= $this->Form->button(__('Rechercher')) ?>
 				<?= $this->Form->end() ?>
 			</td>
 		</tr>
@@ -36,19 +43,11 @@
 	</table>
 </div>
 <div class="resultSearch">
-	
-		
- 		<?php if ($resultItems === null) :?>
-
-
-		<?php else: ?>
-		
-			<i class="fas fa-times closeSearch"></i>
 	<h3>
 		Résultat(s):
 	</h3>
-	<?php foreach ($resultItems as $items) : ?>
 	<table>
+		<?php foreach ($resultItems as $items) : ?>
 			<tr>
 				<td>
 					<?php
@@ -65,8 +64,6 @@
 					$this->Html->link($items->name, ['controller' => 'Pets', 'action' => 'pet', $items->id]); ?>
 				</td>
 			</tr>
-			<?php endforeach ?>
-		<?php endif ?>
-		
+		<?php endforeach ?>
 	</table>
 </div>

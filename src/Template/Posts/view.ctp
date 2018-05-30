@@ -1,7 +1,6 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Post $post
  */
 ?>
 
@@ -16,7 +15,11 @@
                     </li>
                     <li<?php if($this->request->action == 'view'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-user-circle"></i>
-                        <?= $this->Html->link('Mon profil', array('controller' => 'users', 'action' => 'view', 3)); ?>
+                        <?= $this->Html->link('Mon profil', array('controller' => 'users', 'action' => 'view', $user_id)); ?>
+                    </li>
+                    <li<?php if($this->request->action == 'inbox'): ?> class="active"<?php endif; ?>>
+                        <i class="fas fa-envelope"></i>
+                        <?= $this->Html->link('Messagerie     '.$unreadcount, array('controller' => 'messages', 'action' => 'inbox')); ?>      
                     </li>
                     <li<?php if($this->request->action == 'account'): ?> class="active"<?php endif; ?>>
                         <i class="fas fa-cog"></i>
@@ -41,65 +44,83 @@
                                 echo $this->Html->image($url, [
                                     'class' => 'picPost'
                     ]);?>
-                </div>
-                <div class="infoPost">
                     <div class="titlePost">
-                        <?= h($post->content);?>
+                        <?= h($post->content);?> <br/>
+                        publié le: <?= h($post->created->format('d/m/Y'));?>
                     </div>
-                     
-                    <table class="tablePost">
-                        <tr>
-                            <td>
-                                publié le: <?= h($post->created);?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
+                </div>
 
-                            <?php if(in_array($post->id, $this->request->session()->read('Auth.Like'))) :?>
-                                <i class="fas fa-times"></i>
-                                <?= $this->Html->link("Je n'aime plus ", array('controller' => 'posts', 'action' => 'unlike', $post->id)); ?>
-                            <?php else: ?>
-                                <i class="fas fa-heart"></i>
-                                <?= $this->Html->link("J'aime ", array('controller' => 'posts', 'action' => 'like', $post->id)); ?>
-                            
-                            <?php endif; ?>
-                    
-                            </td>
-                            <td>
-                                Aimé par :
-                                <?php foreach ($like as $likes): ?>
-                                    <?= $likes->has('user') ? $this->Html->link("   ".$likes->user->firstname, ['controller' => 'Users', 'action' => 'view', $likes->user->id]) : '' ?>
-                                <?php endforeach ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <i class="fas fa-comment"></i>
-                                <?= $this->Html->link("Je commente ", array('controller' => 'comments', 'action' => 'add', $post->id)); ?>
-                            </td>
-                            <td>
-                                Les commentaires:
-                            </td>
-                        </tr>
-                        <tr>
+                <div class="infoPost">
+                    <div class="actionsPost">
+                        <div class="likeActionPost">
+                            <i class="fas fa-heart"></i>
+                                    <?= $this->Html->link("J'aime ", array('controller' => 'posts', 'action' => 'like', $post->id)); ?>
+                        </div>
+                        <div class="commentActionPost">
+                            <i class="fas fa-comment"></i>
+                            <?= $this->Html->link("Je commente ", array('controller' => 'comments', 'action' => 'add', $post->id)); ?>
+                        </div>
+                    </div>
+                    <div class="commentPost">
+                        <h3>
+                            <i class="fas fa-comment"></i>
+                            Commentaires:
+                        </h3>
+                        <table>
                             <?php foreach ($comment as $comments): ?>
-                            <td>
-                                <?= $comments->has('user') ? $this->Html->link("   ".$comments->user->firstname, ['controller' => 'Users', 'action' => 'view', $comments->user->id]) : '' ?>
-                            </td>
-                            <td>
-                                <?= $comments->content ?>
-                            </td>
-                            <td>
-                                le: <?= $comments->created ?>
-                            </td>
-                            <?php endforeach?>
-                        </tr>
-
-                    </table>
+                                <tr>
+                                    <td>
+                                        <?= $comments->has('user') ? $this->Html->link("   ".$comments->user->firstname, ['controller' => 'Users', 'action' => 'view', $comments->user->id]) : '' ?> : 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    </td>
+                                    <td class="alignRightTr">
+                                        <?= $comments->content ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    </td>
+                                    <td class="alignRightTr">
+                                        le: <?= $comments->created->format('d/m/Y') ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach ?>
+                        </table>
+                    </div>
 
                 </div>
+
+                
             </div>
         </div>
+</div>
 
-    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

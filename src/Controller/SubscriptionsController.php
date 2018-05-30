@@ -11,9 +11,12 @@ class SubscriptionsController extends AppController
 
   public function initialize(){   
     parent::initialize();
-    $this->Auth->allow(['logout', 'add', 'forgot', 'account', 'home']);
+    $this->Auth->allow(['view']);
   }
 
+  /**
+  * Add method
+  */
   public function add(){
     
         $comment = $this->Subscriptions->newEntity();
@@ -28,12 +31,18 @@ class SubscriptionsController extends AppController
 
   }
 
-  public function view($id){
+  /**
+  * View method
+  *
+  * @param string|null $id Subscription id.
+  * @return \Cake\Http\Response|void
+  * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+  */
+  public function view($id=null){
     $user = $this->Subscriptions->get($id, [
             'contain' => ['Users','Pets'],
     ]);
     $this->set('user', $user);
-
   }
 
 
